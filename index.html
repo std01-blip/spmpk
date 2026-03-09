@@ -14,14 +14,31 @@
         }
         body { font-family: var(--font-thai-body); }
         h1, h2, h3, nav, button, .font-header { font-family: var(--font-thai-header); }
-        .modal-active { overflow: hidden; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
+        
+        /* Custom Toast for error messaging since alert() is restricted */
+        #error-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ef4444;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: bold;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 pb-20">
+
+    <div id="error-toast">ขออภัย! ยังไม่มีลิงก์รูปภาพในขณะนี้</div>
 
     <!-- Navigation -->
     <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
@@ -111,43 +128,10 @@
         </div>
     </footer>
 
-    <!-- Modal -->
-    <div id="modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/95 backdrop-blur-md">
-        <div class="bg-white rounded-[2rem] w-full max-w-xl overflow-hidden relative shadow-2xl">
-            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/10 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-            <div class="aspect-[4/3] bg-slate-100 flex flex-col items-center justify-center p-10 border-b border-slate-100">
-                <div class="w-20 h-20 bg-white rounded-3xl shadow-lg flex items-center justify-center mb-4">
-                    <i data-lucide="image" class="w-10 h-10 text-blue-900 animate-pulse"></i>
-                </div>
-                <p class="text-slate-400 font-bold text-lg animate-pulse">คลังรูปภาพพร้อมใช้งาน</p>
-                <div id="modal-match-teams" class="mt-6 flex items-center gap-4 text-slate-300"></div>
-            </div>
-            <div class="p-8">
-                <div class="flex items-center gap-2 mb-4">
-                    <span class="bg-blue-100 text-blue-900 text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter">Event Gallery</span>
-                    <span class="text-slate-300">•</span>
-                    <span id="modal-match-time" class="text-slate-500 text-[10px] font-bold"></span>
-                </div>
-                <h3 id="modal-match-title" class="text-2xl font-black text-blue-900 mb-2 leading-tight uppercase"></h3>
-                <p id="modal-match-desc" class="text-slate-500 text-sm leading-relaxed mb-8"></p>
-                <div class="flex gap-3">
-                    <button onclick="closeModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 py-4 rounded-2xl font-black transition-all">ย้อนกลับ</button>
-                    <button id="modal-download-btn" class="flex-[2] bg-blue-900 hover:bg-red-600 text-white py-4 rounded-2xl font-black transition-all shadow-lg flex items-center justify-center gap-2">
-                        <i data-lucide="external-link" class="w-5 h-5"></i>
-                        <span>ดูรูปภาพทั้งหมด</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         let currentTab = 'u15';
         let isMenuOpen = false;
 
-        // ข้อมูลการแข่งขัน (แก้ไขลิงก์ตรง photoLink ได้เลย)
         const u15Matches = [
             { group: 'สาย A', time: '08.00', team1: 'ธงชัยวิทยา', team2: 'หัวหิน', photoLink: 'https://photos.app.goo.gl/cFZ8cB1qffAHsBEr9' },
             { group: 'สาย B', time: '08.30', team1: 'บางสะพานวิทยา', team2: 'เตรียมฯ ปราณบุรี', photoLink: '#' },
@@ -219,12 +203,24 @@
             renderMatches();
         }
 
+        function goToPhoto(link) {
+            if (link && link !== '#') {
+                window.open(link, '_blank');
+            } else {
+                const toast = document.getElementById('error-toast');
+                toast.style.display = 'block';
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 3000);
+            }
+        }
+
         function renderMatches() {
             const list = document.getElementById('match-list');
             const matches = currentTab === 'u15' ? u15Matches : u18Matches;
             list.innerHTML = '';
 
-            matches.forEach((match, index) => {
+            matches.forEach((match) => {
                 let html = '';
                 if (match.type === 'ceremony') {
                     html = `
@@ -235,7 +231,7 @@
                                     <div class="h-4 w-[2px] bg-amber-200"></div>
                                     <span class="text-amber-900 font-black text-lg uppercase tracking-wide">${match.label}</span>
                                 </div>
-                                <button onclick='openModal(${JSON.stringify(match)})' class="w-full sm:w-auto flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-5 py-2 rounded-xl font-bold text-sm transition-all shadow-sm">
+                                <button onclick="goToPhoto('${match.photoLink}')" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-5 py-2 rounded-xl font-bold text-sm transition-all shadow-sm">
                                     <i data-lucide="image" class="w-4 h-4"></i>
                                     <span>รูปภาพพิธีเปิด</span>
                                 </button>
@@ -259,7 +255,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button onclick='openModal(${JSON.stringify(match)})' class="flex items-center justify-center gap-2 bg-blue-900 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm">
+                                <button onclick="goToPhoto('${match.photoLink}')" class="flex items-center justify-center gap-2 bg-blue-900 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm">
                                     <i data-lucide="image" class="w-4 h-4"></i>
                                     <span>รูปภาพ</span>
                                 </button>
@@ -272,48 +268,6 @@
             lucide.createIcons();
         }
 
-        function openModal(match) {
-            const modal = document.getElementById('modal');
-            const title = document.getElementById('modal-match-title');
-            const desc = document.getElementById('modal-match-desc');
-            const time = document.getElementById('modal-match-time');
-            const teams = document.getElementById('modal-match-teams');
-            const btn = document.getElementById('modal-download-btn');
-
-            title.innerText = match.type === 'ceremony' ? match.label : `${match.team1} พบ ${match.team2}`;
-            time.innerText = `${match.time} น.`;
-            desc.innerText = `คุณกำลังจะเข้าสู่คลังภาพบันทึก ${match.type === 'ceremony' ? 'กิจกรรมพิธีเปิด' : 'การแข่งขัน'} รุ่นอายุไม่เกิน ${currentTab === 'u15' ? '15 ปี' : '18 ปี'}`;
-            
-            if (match.type !== 'ceremony') {
-                teams.innerHTML = `
-                    <span class="font-bold text-xs uppercase tracking-widest">${match.team1}</span>
-                    <span class="text-red-500 italic font-black">VS</span>
-                    <span class="font-bold text-xs uppercase tracking-widest">${match.team2}</span>
-                `;
-                teams.style.display = 'flex';
-            } else {
-                teams.style.display = 'none';
-            }
-
-            btn.onclick = () => {
-                if (match.photoLink && match.photoLink !== '#') {
-                    window.open(match.photoLink, '_blank');
-                } else {
-                    alert("ขออภัย! ยังไม่มีลิงก์รูปภาพสำหรับรายการนี้ในขณะนี้");
-                }
-            };
-
-            modal.classList.remove('hidden');
-            document.body.classList.add('modal-active');
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('modal');
-            modal.classList.add('hidden');
-            document.body.classList.remove('modal-active');
-        }
-
-        // Initial render
         window.onload = () => {
             renderMatches();
             lucide.createIcons();
