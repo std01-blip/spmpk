@@ -1,335 +1,323 @@
-import React, { useState, useEffect } from 'react';
-import { Trophy, Clock, Image as ImageIcon, Users, Calendar, MapPin, Menu, X, Award } from 'lucide-react';
-
-const App = () => {
-  const [activeTab, setActiveTab] = useState('u15');
-  const [selectedMatch, setSelectedMatch] = useState(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // ข้อมูลรุ่น U15
-  const u15Matches = [
-    { group: 'สาย A', time: '08.00', team1: 'ธงชัยวิทยา', team2: 'หัวหิน' },
-    { group: 'สาย B', time: '08.30', team1: 'บางสะพานวิทยา', team2: 'เตรียมฯ ปราณบุรี' },
-    { type: 'ceremony', time: '09.00', label: 'พิธีเปิดการแข่งขัน' },
-    { group: 'สาย C', time: '09.30', team1: 'ห้วยยางวิทยา', team2: 'บางสะพานน้อยฯ' },
-    { group: 'สาย C', time: '10.00', team1: 'ทับสะแกวิทยา', team2: 'ปากน้ำปราณวิทยา' },
-    { group: 'สาย D', time: '10.30', team1: 'หัวหินวิทยาคม', team2: 'ยางชุมวิทยา' },
-    { group: 'สาย D', time: '11.00', team1: 'ชัยเกษมวิทยา', team2: 'อ่าวน้อยวิทยานิคม' },
-    { group: 'สาย A', time: '11.30', team1: 'ธงชัยวิทยา', team2: 'ประจวบวิทยาลัย' },
-    { group: 'สาย B', time: '12.00', team1: 'บางสะพานวิทยา', team2: 'เมืองปราณบุรี' },
-    { group: 'สาย C', time: '12.30', team1: 'ห้วยยางวิทยา', team2: 'ทับสะแกวิทยา' },
-    { group: 'สาย C', time: '13.00', team1: 'บางสะพานน้อยฯ', team2: 'ปากน้ำปราณวิทยา' },
-    { group: 'สาย D', time: '13.30', team1: 'หัวหินวิทยาคม', team2: 'ชัยเกษมวิทยา' },
-    { group: 'สาย D', time: '14.00', team1: 'ยางชุมวิทยา', team2: 'อ่าวน้อยวิทยานิคม' },
-    { group: 'สาย A', time: '14.30', team1: 'หัวหิน', team2: 'ประจวบวิทยาลัย' },
-    { group: 'สาย B', time: '15.00', team1: 'เตรียมฯ ปราณบุรี', team2: 'เมืองปราณบุรี' },
-    { group: 'สาย C', time: '15.30', team1: 'ห้วยยางวิทยา', team2: 'ปากน้ำปราณวิทยา' },
-    { group: 'สาย C', time: '16.00', team1: 'บางสะพานน้อยฯ', team2: 'ทับสะแกวิทยา' },
-    { group: 'สาย D', time: '16.00', team1: 'หัวหินวิทยาคม', team2: 'อ่าวน้อยวิทยานิคม' },
-    { group: 'สาย D', time: '16.30', team1: 'ยางชุมวิทยา', team2: 'ชัยเกษมวิทยา' },
-  ];
-
-  // ข้อมูลรุ่น U18
-  const u18Matches = [
-    { group: 'สาย A', time: '08.00', team1: 'ห้วยยางวิทยา', team2: 'ทับสะแกวิทยา' },
-    { group: 'สาย B', time: '08.30', team1: 'หัวหิน', team2: 'บางสะพานน้อยฯ' },
-    { type: 'ceremony', time: '09.00', label: 'พิธีเปิดการแข่งขัน' },
-    { group: 'สาย C', time: '09.30', team1: 'ประจวบวิทยาลัย', team2: 'สามร้อยยอดวิทยาคม' },
-    { group: 'สาย D', time: '10.00', team1: 'ปากน้ำปราณวิทยา', team2: 'หัวหินวิทยาคม' },
-    { group: 'สาย D', time: '10.30', team1: 'หว้ากอวิทยาลัย', team2: 'กุยบุรีวิทยา' },
-    { group: 'สาย A', time: '11.00', team1: 'ห้วยยางวิทยา', team2: 'บางสะพานวิทยา' },
-    { group: 'สาย B', time: '11.30', team1: 'หัวหิน', team2: 'หนองพลับวิทยา' },
-    { group: 'สาย C', time: '12.00', team1: 'ประจวบวิทยาลัย', team2: 'เตรียมฯ ปราณบุรี' },
-    { group: 'สาย D', time: '12.30', team1: 'ปากน้ำปราณวิทยา', team2: 'หว้ากอวิทยาลัย' },
-    { group: 'สาย D', time: '13.00', team1: 'หัวหินวิทยาคม', team2: 'กุยบุรีวิทยา' },
-    { group: 'สาย A', time: '13.30', team1: 'ทับสะแกวิทยา', team2: 'บางสะพานวิทยา' },
-    { group: 'สาย B', time: '14.00', team1: 'บางสะพานน้อยฯ', team2: 'หนองพลับวิทยา' },
-    { group: 'สาย C', time: '14.30', team1: 'สามร้อยยอดวิทยาคม', team2: 'เตรียมฯ ปราณบุรี' },
-    { group: 'สาย D', time: '15.00', team1: 'ปากน้ำปราณวิทยา', team2: 'กุยบุรีวิทยา' },
-    { group: 'สาย D', time: '15.30', team1: 'หัวหินวิทยาคม', team2: 'หว้ากอวิทยาลัย' },
-  ];
-
-  const currentMatches = activeTab === 'u15' ? u15Matches : u18Matches;
-
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
-      {/* Navigation Bar */}
-      <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-2">
-              <div className="bg-blue-900 p-1.5 rounded-lg">
-                <Trophy className="w-5 h-5 text-yellow-400" />
-              </div>
-              <span className="font-black text-blue-900 tracking-tight text-lg hidden sm:block">
-                SPM <span className="text-red-600">PRACHUAP</span>
-              </span>
-            </div>
-
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center gap-1">
-              <button
-                onClick={() => setActiveTab('u15')}
-                className={`px-4 py-2 rounded-lg font-bold transition-all ${
-                  activeTab === 'u15' ? 'bg-blue-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                รุ่นอายุไม่เกิน 15 ปี
-              </button>
-              <button
-                onClick={() => setActiveTab('u18')}
-                className={`px-4 py-2 rounded-lg font-bold transition-all ${
-                  activeTab === 'u18' ? 'bg-red-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                รุ่นอายุไม่เกิน 18 ปี
-              </button>
-            </div>
-
-            {/* Mobile Menu Toggle */}
-            <button 
-              className="md:hidden p-2 text-slate-600"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X /> : <Menu />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-slate-100 p-4 space-y-2 animate-in slide-in-from-top duration-200">
-            <button
-              onClick={() => { setActiveTab('u15'); setIsMenuOpen(false); }}
-              className={`w-full text-left px-4 py-3 rounded-xl font-bold ${
-                activeTab === 'u15' ? 'bg-blue-900 text-white' : 'text-slate-600'
-              }`}
-            >
-              รุ่นอายุไม่เกิน 15 ปี
-            </button>
-            <button
-              onClick={() => { setActiveTab('u18'); setIsMenuOpen(false); }}
-              className={`w-full text-left px-4 py-3 rounded-xl font-bold ${
-                activeTab === 'u18' ? 'bg-red-600 text-white' : 'text-slate-600'
-              }`}
-            >
-              รุ่นอายุไม่เกิน 18 ปี
-            </button>
-          </div>
-        )}
-      </nav>
-
-      {/* Hero Header */}
-      <header className="relative bg-blue-900 text-white py-16 px-4 overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-red-600/20 skew-x-12 transform translate-x-1/2"></div>
-        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-yellow-400/10 blur-3xl rounded-full"></div>
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/20 mb-6 animate-bounce">
-            <Award className="w-4 h-4 text-yellow-400" />
-            <span className="text-xs font-bold tracking-widest uppercase">Football 7-A-Side Tournament</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-black mb-4 drop-shadow-md tracking-tighter">
-            SPM PRACHUAP <br/>
-            <span className="text-red-500">CHAMPIONS CUP</span>
-          </h1>
-          <p className="text-blue-100 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
-            โครงการแข่งขันฟุตบอลนักเรียน 7 คน ชิงชนะเลิศ สพม.ประจวบคีรีขันธ์ ครั้งที่ 1 ประจำปี 2569
-          </p>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10 max-w-lg mx-auto">
-            <div className="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
-              <Calendar className="w-5 h-5 text-red-400" />
-              <div className="text-left">
-                <p className="text-[10px] uppercase text-blue-300 font-bold">วันที่ทำการแข่งขัน</p>
-                <p className="text-sm font-bold">9 มีนาคม 2569</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
-              <MapPin className="w-5 h-5 text-yellow-400" />
-              <div className="text-left">
-                <p className="text-[10px] uppercase text-blue-300 font-bold">สถานที่</p>
-                <p className="text-sm font-bold">สนามกีฬา 2 จ.ประจวบฯ</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto -mt-8 px-4 relative z-20">
-        {/* Category Label */}
-        <div className="bg-white rounded-2xl p-4 shadow-xl border border-slate-200 mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${activeTab === 'u15' ? 'bg-blue-100 text-blue-900' : 'bg-red-100 text-red-600'}`}>
-              <Users className="w-6 h-6" />
-            </div>
-            <div>
-              <h2 className="font-black text-xl leading-none">
-                ตารางแข่งขันรุ่น {activeTab === 'u15' ? '15 ปี' : '18 ปี'}
-              </h2>
-              <p className="text-slate-500 text-xs mt-1 font-medium italic">รอบแรก (Group Stage)</p>
-            </div>
-          </div>
-          <div className="hidden sm:block">
-            <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-bold border border-slate-200">
-              สนามที่ {activeTab === 'u15' ? '1 และ 2' : '2'}
-            </span>
-          </div>
-        </div>
-
-        {/* List of Matches */}
-        <div className="space-y-3">
-          {currentMatches.map((match, index) => (
-            match.type === 'ceremony' ? (
-              <div key={index} className="bg-gradient-to-r from-yellow-400 to-amber-500 p-1 rounded-2xl shadow-lg my-6">
-                <div className="bg-white/90 backdrop-blur px-6 py-4 rounded-[14px] flex items-center justify-center gap-3">
-                  <span className="text-amber-700 font-black text-lg">{match.time} น.</span>
-                  <div className="h-4 w-[2px] bg-amber-200"></div>
-                  <span className="text-amber-900 font-black text-lg uppercase tracking-wide">{match.label}</span>
-                </div>
-              </div>
-            ) : (
-              <div 
-                key={index} 
-                className="bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-sm transition-all duration-200"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  {/* Match Info */}
-                  <div className="flex items-center gap-4 flex-1">
-                    <div className="flex flex-col items-center justify-center w-14 h-14 bg-slate-100 rounded-xl border border-slate-200 flex-shrink-0">
-                      <span className="text-[10px] font-bold text-slate-400">{match.group}</span>
-                      <span className="text-base font-black text-blue-900 leading-none mt-1">{match.time}</span>
-                    </div>
-
-                    <div className="flex items-center gap-3 flex-1 overflow-hidden">
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 w-full">
-                        <span className="font-bold text-slate-800 truncate text-sm sm:text-base">{match.team1}</span>
-                        <div className="flex items-center justify-center">
-                          <span className="text-[10px] font-black bg-slate-900 text-white px-2 py-0.5 rounded italic">VS</span>
-                        </div>
-                        <span className="font-bold text-slate-800 truncate text-sm sm:text-base">{match.team2}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Button */}
-                  <button 
-                    onClick={() => setSelectedMatch(match)}
-                    className="flex items-center justify-center gap-2 bg-blue-900 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm active:scale-95"
-                  >
-                    <ImageIcon className="w-4 h-4" />
-                    <span>รูปภาพ</span>
-                  </button>
-                </div>
-              </div>
-            )
-          ))}
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="mt-20 py-10 border-t border-slate-200 bg-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <div className="flex justify-center gap-4 mb-6">
-            <div className="w-10 h-10 rounded-full bg-blue-900 flex items-center justify-center text-white"><Trophy className="w-5 h-5"/></div>
-            <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-white font-black text-xs italic">SPM</div>
-          </div>
-          <p className="font-black text-slate-800 uppercase tracking-widest text-sm">SPM Prachuap Champions Cup #1</p>
-          <p className="text-slate-400 text-xs mt-2 font-medium">© 2026 สำนักงานเขตพื้นที่การศึกษามัธยมศึกษาประจวบคีรีขันธ์</p>
-        </div>
-      </footer>
-
-      {/* Photo View Modal */}
-      {selectedMatch && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/95 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="bg-white rounded-[2rem] w-full max-w-xl overflow-hidden relative shadow-2xl">
-            <div className="absolute top-4 right-4 z-10">
-              <button 
-                onClick={() => setSelectedMatch(null)}
-                className="w-10 h-10 bg-black/20 hover:bg-red-600 text-white rounded-full flex items-center justify-center backdrop-blur transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            <div className="aspect-[4/3] bg-slate-100 flex flex-col items-center justify-center p-10 border-b border-slate-100">
-              <div className="w-20 h-20 bg-white rounded-3xl shadow-lg flex items-center justify-center mb-4">
-                <ImageIcon className="w-10 h-10 text-blue-900 animate-pulse" />
-              </div>
-              <p className="text-slate-400 font-bold text-lg animate-pulse">กำลังเรียกดูคลังรูปภาพ...</p>
-              <div className="mt-6 flex items-center gap-4 text-slate-300">
-                <span className="font-bold text-xs uppercase tracking-widest">{selectedMatch.team1}</span>
-                <span className="text-red-500 italic font-black">VS</span>
-                <span className="font-bold text-xs uppercase tracking-widest">{selectedMatch.team2}</span>
-              </div>
-            </div>
-
-            <div className="p-8">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="bg-blue-100 text-blue-900 text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter">Match Photo Gallery</span>
-                <span className="text-slate-300">•</span>
-                <span className="text-slate-500 text-[10px] font-bold">{selectedMatch.time} น.</span>
-              </div>
-              <h3 className="text-2xl font-black text-blue-900 mb-2 leading-tight uppercase">
-                {selectedMatch.team1} พบ {selectedMatch.team2}
-              </h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-8">
-                คุณกำลังจะเข้าสู่คลังภาพบันทึกการแข่งขัน รุ่นอายุไม่เกิน {activeTab === 'u15' ? '15 ปี' : '18 ปี'} รอบแบ่งกลุ่ม {selectedMatch.group}
-              </p>
-              
-              <div className="flex gap-3">
-                <button 
-                  onClick={() => setSelectedMatch(null)}
-                  className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 py-4 rounded-2xl font-black transition-all"
-                >
-                  ย้อนกลับ
-                </button>
-                <button 
-                  className="flex-[2] bg-blue-900 hover:bg-red-600 text-white py-4 rounded-2xl font-black transition-all shadow-lg shadow-blue-900/20"
-                >
-                  ยืนยันเพื่อดาวน์โหลดภาพ
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Global CSS Styles */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&family=Kanit:wght@100;400;700;900&display=swap');
-        
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPM Prachuap Champions Cup #1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&family=Kanit:wght@100;400;700;900&display=swap" rel="stylesheet">
+    <style>
         :root {
-          --font-thai-header: 'Kanit', sans-serif;
-          --font-thai-body: 'Anuphan', sans-serif;
+            --font-thai-header: 'Kanit', sans-serif;
+            --font-thai-body: 'Anuphan', sans-serif;
         }
+        body { font-family: var(--font-thai-body); }
+        h1, h2, h3, nav, button, .font-header { font-family: var(--font-thai-header); }
+        .modal-active { overflow: hidden; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 pb-20">
 
-        body {
-          font-family: var(--font-thai-body);
-        }
-        
-        h1, h2, h3, nav, button, .font-kanit {
-          font-family: var(--font-thai-header);
-        }
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2">
+                    <div class="bg-blue-900 p-1.5 rounded-lg">
+                        <i data-lucide="trophy" class="w-5 h-5 text-yellow-400"></i>
+                    </div>
+                    <span class="font-black text-blue-900 tracking-tight text-lg hidden sm:block">
+                        SPM <span class="text-red-600">PRACHUAP</span>
+                    </span>
+                </div>
 
-        ::-webkit-scrollbar {
-          width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: #1e3a8a;
-          border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: #ef4444;
-        }
-      `}</style>
+                <div class="hidden md:flex items-center gap-1" id="desktop-menu">
+                    <button onclick="switchTab('u15')" id="btn-u15" class="px-4 py-2 rounded-lg font-bold transition-all bg-blue-900 text-white shadow-md">รุ่นอายุไม่เกิน 15 ปี</button>
+                    <button onclick="switchTab('u18')" id="btn-u18" class="px-4 py-2 rounded-lg font-bold transition-all text-slate-600 hover:bg-slate-100">รุ่นอายุไม่เกิน 18 ปี</button>
+                </div>
+
+                <button class="md:hidden p-2 text-slate-600" onclick="toggleMenu()">
+                    <i data-lucide="menu" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 space-y-2">
+            <button onclick="switchTab('u15'); toggleMenu();" class="w-full text-left px-4 py-3 rounded-xl font-bold bg-blue-900 text-white">รุ่นอายุไม่เกิน 15 ปี</button>
+            <button onclick="switchTab('u18'); toggleMenu();" class="w-full text-left px-4 py-3 rounded-xl font-bold text-slate-600">รุ่นอายุไม่เกิน 18 ปี</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="relative bg-blue-900 text-white py-16 px-4 overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-red-600/20 skew-x-12 transform translate-x-1/2"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/20 mb-6 animate-bounce">
+                <i data-lucide="award" class="w-4 h-4 text-yellow-400"></i>
+                <span class="text-xs font-bold tracking-widest uppercase">Football 7-A-Side Tournament</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tighter uppercase">SPM PRACHUAP <br><span class="text-red-500">CHAMPIONS CUP</span></h1>
+            <p class="text-blue-100 text-lg font-medium max-w-2xl mx-auto leading-relaxed italic">โครงการแข่งขันฟุตบอลนักเรียน 7 คน ชิงชนะเลิศ สพม.ประจวบคีรีขันธ์ ครั้งที่ 1 ประจำปี 2569</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10 max-w-lg mx-auto">
+                <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
+                    <i data-lucide="calendar" class="w-5 h-5 text-red-400"></i>
+                    <div class="text-left"><p class="text-[10px] uppercase text-blue-300 font-bold">วันที่ทำการแข่งขัน</p><p class="text-sm font-bold">9 มีนาคม 2569</p></div>
+                </div>
+                <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-yellow-400"></i>
+                    <div class="text-left"><p class="text-[10px] uppercase text-blue-300 font-bold">สถานที่</p><p class="text-sm font-bold">สนามกีฬา 2 จ.ประจวบฯ</p></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="max-w-4xl mx-auto -mt-8 px-4 relative z-20">
+        <div class="bg-white rounded-2xl p-4 shadow-xl border border-slate-200 mb-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div id="tab-icon-box" class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-900">
+                    <i data-lucide="users" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 id="tab-title" class="font-black text-xl leading-none">ตารางแข่งขันรุ่น 15 ปี</h2>
+                    <p class="text-slate-500 text-xs mt-1 font-medium italic">รอบแรก (Group Stage)</p>
+                </div>
+            </div>
+            <div class="hidden sm:block">
+                <span id="field-label" class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-bold border border-slate-200">สนามที่ 1 และ 2</span>
+            </div>
+        </div>
+
+        <div id="match-list" class="space-y-3">
+            <!-- Matches will be injected here -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 py-10 border-t border-slate-200 bg-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <div class="flex justify-center gap-4 mb-6">
+                <div class="w-10 h-10 rounded-full bg-blue-900 flex items-center justify-center text-white"><i data-lucide="trophy" class="w-5 h-5"></i></div>
+                <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-white font-black text-xs italic">SPM</div>
+            </div>
+            <p class="font-black text-slate-800 uppercase tracking-widest text-sm">SPM Prachuap Champions Cup #1</p>
+            <p class="text-slate-400 text-xs mt-2 font-medium">© 2026 สำนักงานเขตพื้นที่การศึกษามัธยมศึกษาประจวบคีรีขันธ์</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/95 backdrop-blur-md">
+        <div class="bg-white rounded-[2rem] w-full max-w-xl overflow-hidden relative shadow-2xl">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/10 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="aspect-[4/3] bg-slate-100 flex flex-col items-center justify-center p-10 border-b border-slate-100">
+                <div class="w-20 h-20 bg-white rounded-3xl shadow-lg flex items-center justify-center mb-4">
+                    <i data-lucide="image" class="w-10 h-10 text-blue-900 animate-pulse"></i>
+                </div>
+                <p class="text-slate-400 font-bold text-lg animate-pulse">คลังรูปภาพพร้อมใช้งาน</p>
+                <div id="modal-match-teams" class="mt-6 flex items-center gap-4 text-slate-300"></div>
+            </div>
+            <div class="p-8">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="bg-blue-100 text-blue-900 text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter">Event Gallery</span>
+                    <span class="text-slate-300">•</span>
+                    <span id="modal-match-time" class="text-slate-500 text-[10px] font-bold"></span>
+                </div>
+                <h3 id="modal-match-title" class="text-2xl font-black text-blue-900 mb-2 leading-tight uppercase"></h3>
+                <p id="modal-match-desc" class="text-slate-500 text-sm leading-relaxed mb-8"></p>
+                <div class="flex gap-3">
+                    <button onclick="closeModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 py-4 rounded-2xl font-black transition-all">ย้อนกลับ</button>
+                    <button id="modal-download-btn" class="flex-[2] bg-blue-900 hover:bg-red-600 text-white py-4 rounded-2xl font-black transition-all shadow-lg flex items-center justify-center gap-2">
+                        <i data-lucide="external-link" class="w-5 h-5"></i>
+                        <span>ดูรูปภาพทั้งหมด</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  );
-};
 
-export default App;
+    <script>
+        let currentTab = 'u15';
+        let isMenuOpen = false;
+
+        // ข้อมูลการแข่งขัน (แก้ไขลิงก์ตรง photoLink ได้เลย)
+        const u15Matches = [
+            { group: 'สาย A', time: '08.00', team1: 'ธงชัยวิทยา', team2: 'หัวหิน', photoLink: 'https://example.com/photo1' },
+            { group: 'สาย B', time: '08.30', team1: 'บางสะพานวิทยา', team2: 'เตรียมฯ ปราณบุรี', photoLink: '#' },
+            { type: 'ceremony', time: '09.00', label: 'พิธีเปิดการแข่งขัน', photoLink: 'https://example.com/ceremony' },
+            { group: 'สาย C', time: '09.30', team1: 'ห้วยยางวิทยา', team2: 'บางสะพานน้อยฯ', photoLink: '#' },
+            { group: 'สาย C', time: '10.00', team1: 'ทับสะแกวิทยา', team2: 'ปากน้ำปราณวิทยา', photoLink: '#' },
+            { group: 'สาย D', time: '10.30', team1: 'หัวหินวิทยาคม', team2: 'ยางชุมวิทยา', photoLink: '#' },
+            { group: 'สาย D', time: '11.00', team1: 'ชัยเกษมวิทยา', team2: 'อ่าวน้อยวิทยานิคม', photoLink: '#' },
+            { group: 'สาย A', time: '11.30', team1: 'ธงชัยวิทยา', team2: 'ประจวบวิทยาลัย', photoLink: '#' },
+            { group: 'สาย B', time: '12.00', team1: 'บางสะพานวิทยา', team2: 'เมืองปราณบุรี', photoLink: '#' },
+            { group: 'สาย C', time: '12.30', team1: 'ห้วยยางวิทยา', team2: 'ทับสะแกวิทยา', photoLink: '#' },
+            { group: 'สาย C', time: '13.00', team1: 'บางสะพานน้อยฯ', team2: 'ปากน้ำปราณวิทยา', photoLink: '#' },
+            { group: 'สาย D', time: '13.30', team1: 'หัวหินวิทยาคม', team2: 'ชัยเกษมวิทยา', photoLink: '#' },
+            { group: 'สาย D', time: '14.00', team1: 'ยางชุมวิทยา', team2: 'อ่าวน้อยวิทยานิคม', photoLink: '#' },
+            { group: 'สาย A', time: '14.30', team1: 'หัวหิน', team2: 'ประจวบวิทยาลัย', photoLink: '#' },
+            { group: 'สาย B', time: '15.00', team1: 'เตรียมฯ ปราณบุรี', team2: 'เมืองปราณบุรี', photoLink: '#' },
+            { group: 'สาย C', time: '15.30', team1: 'ห้วยยางวิทยา', team2: 'ปากน้ำปราณวิทยา', photoLink: '#' },
+            { group: 'สาย C', time: '16.00', team1: 'บางสะพานน้อยฯ', team2: 'ทับสะแกวิทยา', photoLink: '#' },
+            { group: 'สาย D', time: '16.00', team1: 'หัวหินวิทยาคม', team2: 'อ่าวน้อยวิทยานิคม', photoLink: '#' },
+            { group: 'สาย D', time: '16.30', team1: 'ยางชุมวิทยา', team2: 'ชัยเกษมวิทยา', photoLink: '#' },
+        ];
+
+        const u18Matches = [
+            { group: 'สาย A', time: '08.00', team1: 'ห้วยยางวิทยา', team2: 'ทับสะแกวิทยา', photoLink: '#' },
+            { group: 'สาย B', time: '08.30', team1: 'หัวหิน', team2: 'บางสะพานน้อยฯ', photoLink: '#' },
+            { type: 'ceremony', time: '09.00', label: 'พิธีเปิดการแข่งขัน', photoLink: '#' },
+            { group: 'สาย C', time: '09.30', team1: 'ประจวบวิทยาลัย', team2: 'สามร้อยยอดวิทยาคม', photoLink: '#' },
+            { group: 'สาย D', time: '10.00', team1: 'ปากน้ำปราณวิทยา', team2: 'หัวหินวิทยาคม', photoLink: '#' },
+            { group: 'สาย D', time: '10.30', team1: 'หว้ากอวิทยาลัย', team2: 'กุยบุรีวิทยา', photoLink: '#' },
+            { group: 'สาย A', time: '11.00', team1: 'ห้วยยางวิทยา', team2: 'บางสะพานวิทยา', photoLink: '#' },
+            { group: 'สาย B', time: '11.30', team1: 'หัวหิน', team2: 'หนองพลับวิทยา', photoLink: '#' },
+            { group: 'สาย C', time: '12.00', team1: 'ประจวบวิทยาลัย', team2: 'เตรียมฯ ปราณบุรี', photoLink: '#' },
+            { group: 'สาย D', time: '12.30', team1: 'ปากน้ำปราณวิทยา', team2: 'หว้ากอวิทยาลัย', photoLink: '#' },
+            { group: 'สาย D', time: '13.00', team1: 'หัวหินวิทยาคม', team2: 'กุยบุรีวิทยา', photoLink: '#' },
+            { group: 'สาย A', time: '13.30', team1: 'ทับสะแกวิทยา', team2: 'บางสะพานวิทยา', photoLink: '#' },
+            { group: 'สาย B', time: '14.00', team1: 'บางสะพานน้อยฯ', team2: 'หนองพลับวิทยา', photoLink: '#' },
+            { group: 'สาย C', time: '14.30', team1: 'สามร้อยยอดวิทยาคม', team2: 'เตรียมฯ ปราณบุรี', photoLink: '#' },
+            { group: 'สาย D', time: '15.00', team1: 'ปากน้ำปราณวิทยา', team2: 'กุยบุรีวิทยา', photoLink: '#' },
+            { group: 'สาย D', time: '15.30', team1: 'หัวหินวิทยาคม', team2: 'หว้ากอวิทยาลัย', photoLink: '#' },
+        ];
+
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            isMenuOpen = !isMenuOpen;
+            menu.classList.toggle('hidden');
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            const btnU15 = document.getElementById('btn-u15');
+            const btnU18 = document.getElementById('btn-u18');
+            const tabTitle = document.getElementById('tab-title');
+            const tabIconBox = document.getElementById('tab-icon-box');
+            const fieldLabel = document.getElementById('field-label');
+
+            if (tab === 'u15') {
+                btnU15.className = 'px-4 py-2 rounded-lg font-bold transition-all bg-blue-900 text-white shadow-md';
+                btnU18.className = 'px-4 py-2 rounded-lg font-bold transition-all text-slate-600 hover:bg-slate-100';
+                tabTitle.innerText = 'ตารางแข่งขันรุ่น 15 ปี';
+                tabIconBox.className = 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-900';
+                fieldLabel.innerText = 'สนามที่ 1 และ 2';
+            } else {
+                btnU18.className = 'px-4 py-2 rounded-lg font-bold transition-all bg-red-600 text-white shadow-md';
+                btnU15.className = 'px-4 py-2 rounded-lg font-bold transition-all text-slate-600 hover:bg-slate-100';
+                tabTitle.innerText = 'ตารางแข่งขันรุ่น 18 ปี';
+                tabIconBox.className = 'w-12 h-12 rounded-xl flex items-center justify-center bg-red-100 text-red-600';
+                fieldLabel.innerText = 'สนามที่ 2';
+            }
+            renderMatches();
+        }
+
+        function renderMatches() {
+            const list = document.getElementById('match-list');
+            const matches = currentTab === 'u15' ? u15Matches : u18Matches;
+            list.innerHTML = '';
+
+            matches.forEach((match, index) => {
+                let html = '';
+                if (match.type === 'ceremony') {
+                    html = `
+                        <div class="bg-gradient-to-r from-yellow-400 to-amber-500 p-1 rounded-2xl shadow-lg my-6">
+                            <div class="bg-white/90 backdrop-blur px-6 py-4 rounded-[14px] flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-amber-700 font-black text-lg">${match.time} น.</span>
+                                    <div class="h-4 w-[2px] bg-amber-200"></div>
+                                    <span class="text-amber-900 font-black text-lg uppercase tracking-wide">${match.label}</span>
+                                </div>
+                                <button onclick='openModal(${JSON.stringify(match)})' class="w-full sm:w-auto flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-5 py-2 rounded-xl font-bold text-sm transition-all shadow-sm">
+                                    <i data-lucide="image" class="w-4 h-4"></i>
+                                    <span>รูปภาพพิธีเปิด</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html = `
+                        <div class="bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-sm transition-all duration-200">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div class="flex items-center gap-4 flex-1">
+                                    <div class="flex flex-col items-center justify-center w-14 h-14 bg-slate-100 rounded-xl border border-slate-200 flex-shrink-0">
+                                        <span class="text-[10px] font-bold text-slate-400">${match.group}</span>
+                                        <span class="text-base font-black text-blue-900 leading-none mt-1">${match.time}</span>
+                                    </div>
+                                    <div class="flex items-center gap-3 flex-1 overflow-hidden">
+                                        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 w-full">
+                                            <span class="font-bold text-slate-800 truncate text-sm sm:text-base">${match.team1}</span>
+                                            <div class="flex items-center justify-center"><span class="text-[10px] font-black bg-slate-900 text-white px-2 py-0.5 rounded italic">VS</span></div>
+                                            <span class="font-bold text-slate-800 truncate text-sm sm:text-base">${match.team2}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick='openModal(${JSON.stringify(match)})' class="flex items-center justify-center gap-2 bg-blue-900 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm">
+                                    <i data-lucide="image" class="w-4 h-4"></i>
+                                    <span>รูปภาพ</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+                list.innerHTML += html;
+            });
+            lucide.createIcons();
+        }
+
+        function openModal(match) {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modal-match-title');
+            const desc = document.getElementById('modal-match-desc');
+            const time = document.getElementById('modal-match-time');
+            const teams = document.getElementById('modal-match-teams');
+            const btn = document.getElementById('modal-download-btn');
+
+            title.innerText = match.type === 'ceremony' ? match.label : `${match.team1} พบ ${match.team2}`;
+            time.innerText = `${match.time} น.`;
+            desc.innerText = `คุณกำลังจะเข้าสู่คลังภาพบันทึก ${match.type === 'ceremony' ? 'กิจกรรมพิธีเปิด' : 'การแข่งขัน'} รุ่นอายุไม่เกิน ${currentTab === 'u15' ? '15 ปี' : '18 ปี'}`;
+            
+            if (match.type !== 'ceremony') {
+                teams.innerHTML = `
+                    <span class="font-bold text-xs uppercase tracking-widest">${match.team1}</span>
+                    <span class="text-red-500 italic font-black">VS</span>
+                    <span class="font-bold text-xs uppercase tracking-widest">${match.team2}</span>
+                `;
+                teams.style.display = 'flex';
+            } else {
+                teams.style.display = 'none';
+            }
+
+            btn.onclick = () => {
+                if (match.photoLink && match.photoLink !== '#') {
+                    window.open(match.photoLink, '_blank');
+                } else {
+                    alert("ขออภัย! ยังไม่มีลิงก์รูปภาพสำหรับรายการนี้ในขณะนี้");
+                }
+            };
+
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.add('hidden');
+            document.body.classList.remove('modal-active');
+        }
+
+        // Initial render
+        window.onload = () => {
+            renderMatches();
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
