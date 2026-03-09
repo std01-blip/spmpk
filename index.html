@@ -19,7 +19,6 @@
         ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
         
-        /* Custom Toast for error messaging since alert() is restricted */
         #error-toast {
             position: fixed;
             bottom: 20px;
@@ -34,6 +33,9 @@
             display: none;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
+
+        .tab-active-u15 { background-color: white !important; color: #1e3a8a !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .tab-active-u18 { background-color: #ef4444 !important; color: white !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 pb-20">
@@ -48,71 +50,88 @@
                     <div class="bg-blue-900 p-1.5 rounded-lg">
                         <i data-lucide="trophy" class="w-5 h-5 text-yellow-400"></i>
                     </div>
-                    <span class="font-black text-blue-900 tracking-tight text-lg hidden sm:block">
+                    <span class="font-black text-blue-900 tracking-tight text-lg">
                         SPM <span class="text-red-600">PRACHUAP</span>
                     </span>
                 </div>
-
-                <div class="hidden md:flex items-center gap-1" id="desktop-menu">
-                    <button onclick="switchTab('u15')" id="btn-u15" class="px-4 py-2 rounded-lg font-bold transition-all bg-blue-900 text-white shadow-md">รุ่นอายุไม่เกิน 15 ปี</button>
-                    <button onclick="switchTab('u18')" id="btn-u18" class="px-4 py-2 rounded-lg font-bold transition-all text-slate-600 hover:bg-slate-100">รุ่นอายุไม่เกิน 18 ปี</button>
+                
+                <div class="flex items-center gap-2">
+                    <a href="#" class="text-slate-400 hover:text-blue-900 transition-colors">
+                        <i data-lucide="info" class="w-5 h-5"></i>
+                    </a>
                 </div>
-
-                <button class="md:hidden p-2 text-slate-600" onclick="toggleMenu()">
-                    <i data-lucide="menu" id="menu-icon"></i>
-                </button>
             </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 space-y-2">
-            <button onclick="switchTab('u15'); toggleMenu();" class="w-full text-left px-4 py-3 rounded-xl font-bold bg-blue-900 text-white">รุ่นอายุไม่เกิน 15 ปี</button>
-            <button onclick="switchTab('u18'); toggleMenu();" class="w-full text-left px-4 py-3 rounded-xl font-bold text-slate-600">รุ่นอายุไม่เกิน 18 ปี</button>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <header class="relative bg-blue-900 text-white py-16 px-4 overflow-hidden">
+    <!-- Hero Section -->
+    <header class="relative bg-blue-900 text-white py-12 md:py-16 px-4 overflow-hidden">
         <div class="absolute top-0 right-0 w-1/3 h-full bg-red-600/20 skew-x-12 transform translate-x-1/2"></div>
         <div class="max-w-4xl mx-auto text-center relative z-10">
-            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/20 mb-6 animate-bounce">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/20 mb-6 animate-pulse">
                 <i data-lucide="award" class="w-4 h-4 text-yellow-400"></i>
-                <span class="text-xs font-bold tracking-widest uppercase">Football 7-A-Side Tournament</span>
+                <span class="text-[10px] md:text-xs font-bold tracking-widest uppercase">Football 7-A-Side Tournament</span>
             </div>
-            <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tighter uppercase">SPM PRACHUAP <br><span class="text-red-500">CHAMPIONS CUP</span></h1>
-            <p class="text-blue-100 text-base md:text-lg font-medium max-w-2xl mx-auto leading-relaxed italic whitespace-normal md:whitespace-nowrap">โครงการแข่งขันฟุตบอลนักเรียน 7 คน ชิงชนะเลิศ สพม.ประจวบคีรีขันธ์ ครั้งที่ 1 ประจำปี 2569</p>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10 max-w-lg mx-auto">
+            <h1 class="text-3xl md:text-6xl font-black mb-4 tracking-tighter uppercase leading-tight">
+                SPM PRACHUAP <br><span class="text-red-500">CHAMPIONS CUP</span>
+            </h1>
+            
+            <p class="text-blue-100 text-sm md:text-lg font-medium max-w-2xl mx-auto leading-relaxed italic mb-8">
+                โครงการแข่งขันฟุตบอลนักเรียน 7 คน ชิงชนะเลิศ สพม.ประจวบคีรีขันธ์ ครั้งที่ 1 ประจำปี 2569
+            </p>
+            
+            <!-- Date & Location -->
+            <div class="grid grid-cols-2 gap-3 md:gap-4 max-w-lg mx-auto mb-10">
                 <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
-                    <i data-lucide="calendar" class="w-5 h-5 text-red-400"></i>
-                    <div class="text-left"><p class="text-[10px] uppercase text-blue-300 font-bold">วันที่ทำการแข่งขัน</p><p class="text-sm font-bold">9-10 มีนาคม 2569</p></div>
+                    <i data-lucide="calendar" class="w-5 h-5 text-red-400 flex-shrink-0"></i>
+                    <div class="text-left">
+                        <p class="text-[9px] uppercase text-blue-300 font-bold">วันที่แข่งขัน</p>
+                        <p class="text-xs md:text-sm font-bold">9-10 มี.ค. 69</p>
+                    </div>
                 </div>
                 <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-yellow-400"></i>
-                    <div class="text-left"><p class="text-[10px] uppercase text-blue-300 font-bold">สถานที่</p><p class="text-sm font-bold">สามอ่าว สเตเดียม</p></div>
+                    <i data-lucide="map-pin" class="w-5 h-5 text-yellow-400 flex-shrink-0"></i>
+                    <div class="text-left">
+                        <p class="text-[9px] uppercase text-blue-300 font-bold">สถานที่</p>
+                        <p class="text-xs md:text-sm font-bold truncate">สามอ่าว สเตเดียม</p>
+                    </div>
                 </div>
+            </div>
+
+            <!-- TAB SWITCHER (Prominent for Mobile) -->
+            <div class="bg-blue-950/50 p-1.5 rounded-2xl border border-white/10 max-w-sm mx-auto flex gap-1">
+                <button onclick="switchTab('u15')" id="hero-btn-u15" class="flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u15">
+                    <i data-lucide="users-round" class="w-4 h-4"></i>
+                    รุ่น U15
+                </button>
+                <button onclick="switchTab('u18')" id="hero-btn-u18" class="flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200">
+                    <i data-lucide="users-round" class="w-4 h-4"></i>
+                    รุ่น U18
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Main -->
-    <main class="max-w-4xl mx-auto -mt-8 px-4 relative z-20">
+    <!-- Main Content Area -->
+    <main class="max-w-4xl mx-auto -mt-6 px-4 relative z-20">
         <div class="bg-white rounded-2xl p-4 shadow-xl border border-slate-200 mb-6 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div id="tab-icon-box" class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-900">
-                    <i data-lucide="users" class="w-6 h-6"></i>
+                <div id="tab-icon-box" class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-900 transition-colors">
+                    <i data-lucide="calendar-range" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <h2 id="tab-title" class="font-black text-xl leading-none">ตารางแข่งขันรุ่น 15 ปี</h2>
-                    <p class="text-slate-500 text-xs mt-1 font-medium italic">รอบแรก (Group Stage)</p>
+                    <h2 id="tab-title" class="font-black text-lg md:text-xl leading-none">ตารางแข่งขันรุ่น 15 ปี</h2>
+                    <p class="text-slate-500 text-[10px] md:text-xs mt-1 font-medium italic">รอบแรก (Group Stage)</p>
                 </div>
             </div>
-            <div class="hidden sm:block">
-                <span id="field-label" class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-bold border border-slate-200">สนามที่ 1</span>
+            <div>
+                <span id="field-label" class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border border-slate-200 transition-all">สนามที่ 1</span>
             </div>
         </div>
 
         <div id="match-list" class="space-y-3">
-            <!-- Matches will be injected here -->
+            <!-- Matches Injected Here -->
         </div>
     </main>
 
@@ -124,13 +143,12 @@
                 <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-white font-black text-xs italic">SPM</div>
             </div>
             <p class="font-black text-slate-800 uppercase tracking-widest text-sm">SPM Prachuap Champions Cup #1</p>
-            <p class="text-slate-400 text-xs mt-2 font-medium">© 2026 สำนักงานเขตพื้นที่การศึกษามัธยมศึกษาประจวบคีรีขันธ์</p>
+            <p class="text-slate-400 text-[10px] md:text-xs mt-2 font-medium">© 2026 สำนักงานเขตพื้นที่การศึกษามัธยมศึกษาประจวบคีรีขันธ์</p>
         </div>
     </footer>
 
     <script>
         let currentTab = 'u15';
-        let isMenuOpen = false;
 
         const u15Matches = [
             { group: 'สาย A', time: '08.00', team1: 'ธงชัยวิทยา', team2: 'หัวหิน', photoLink: 'https://photos.app.goo.gl/cFZ8cB1qffAHsBEr9' },
@@ -173,32 +191,30 @@
             { group: 'สาย D', time: '15.30', team1: 'หัวหินวิทยาคม', team2: 'หว้ากอวิทยาลัย', photoLink: '#' },
         ];
 
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            isMenuOpen = !isMenuOpen;
-            menu.classList.toggle('hidden');
-        }
-
         function switchTab(tab) {
             currentTab = tab;
-            const btnU15 = document.getElementById('btn-u15');
-            const btnU18 = document.getElementById('btn-u18');
+            const heroBtnU15 = document.getElementById('hero-btn-u15');
+            const heroBtnU18 = document.getElementById('hero-btn-u18');
             const tabTitle = document.getElementById('tab-title');
             const tabIconBox = document.getElementById('tab-icon-box');
             const fieldLabel = document.getElementById('field-label');
 
             if (tab === 'u15') {
-                btnU15.className = 'px-4 py-2 rounded-lg font-bold transition-all bg-blue-900 text-white shadow-md';
-                btnU18.className = 'px-4 py-2 rounded-lg font-bold transition-all text-slate-600 hover:bg-slate-100';
+                heroBtnU15.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u15';
+                heroBtnU18.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200';
+                
                 tabTitle.innerText = 'ตารางแข่งขันรุ่น 15 ปี';
                 tabIconBox.className = 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-900';
                 fieldLabel.innerText = 'สนามที่ 1';
+                fieldLabel.className = 'bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border border-slate-200';
             } else {
-                btnU18.className = 'px-4 py-2 rounded-lg font-bold transition-all bg-red-600 text-white shadow-md';
-                btnU15.className = 'px-4 py-2 rounded-lg font-bold transition-all text-slate-600 hover:bg-slate-100';
+                heroBtnU18.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u18';
+                heroBtnU15.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200';
+                
                 tabTitle.innerText = 'ตารางแข่งขันรุ่น 18 ปี';
                 tabIconBox.className = 'w-12 h-12 rounded-xl flex items-center justify-center bg-red-100 text-red-600';
                 fieldLabel.innerText = 'สนามที่ 2';
+                fieldLabel.className = 'bg-red-50 text-red-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border border-red-100';
             }
             renderMatches();
         }
@@ -224,39 +240,41 @@
                 let html = '';
                 if (match.type === 'ceremony') {
                     html = `
-                        <div class="bg-gradient-to-r from-yellow-400 to-amber-500 p-1 rounded-2xl shadow-lg my-6">
-                            <div class="bg-white/90 backdrop-blur px-6 py-4 rounded-[14px] flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="bg-gradient-to-r from-yellow-400 to-amber-500 p-0.5 rounded-2xl shadow-lg my-6">
+                            <div class="bg-white/95 backdrop-blur px-4 md:px-6 py-4 rounded-[14px] flex flex-col sm:flex-row items-center justify-between gap-4">
                                 <div class="flex items-center gap-3">
                                     <span class="text-amber-700 font-black text-lg">${match.time} น.</span>
                                     <div class="h-4 w-[2px] bg-amber-200"></div>
-                                    <span class="text-amber-900 font-black text-lg uppercase tracking-wide">${match.label}</span>
+                                    <span class="text-amber-900 font-black text-base md:text-lg uppercase tracking-wide text-center sm:text-left">${match.label}</span>
                                 </div>
-                                <button onclick="goToPhoto('${match.photoLink}')" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-5 py-2 rounded-xl font-bold text-sm transition-all shadow-sm">
+                                <button onclick="goToPhoto('${match.photoLink}')" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-5 py-2 rounded-xl font-bold text-xs transition-all shadow-sm">
                                     <i data-lucide="image" class="w-4 h-4"></i>
-                                    <span>รูปภาพพิธีเปิด</span>
+                                    <span>รูปภาพกิจกรรม</span>
                                 </button>
                             </div>
                         </div>
                     `;
                 } else {
                     html = `
-                        <div class="bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl p-4 shadow-sm transition-all duration-200">
+                        <div class="bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl p-3 md:p-4 shadow-sm transition-all duration-200">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div class="flex items-center gap-4 flex-1">
-                                    <div class="flex flex-col items-center justify-center w-14 h-14 bg-slate-100 rounded-xl border border-slate-200 flex-shrink-0">
-                                        <span class="text-[10px] font-bold text-slate-400">${match.group}</span>
-                                        <span class="text-base font-black text-blue-900 leading-none mt-1">${match.time}</span>
+                                <div class="flex items-center gap-3 md:gap-4 flex-1">
+                                    <div class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-slate-100 rounded-xl border border-slate-200 flex-shrink-0">
+                                        <span class="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase">${match.group}</span>
+                                        <span class="text-sm md:text-base font-black text-blue-900 leading-none mt-1">${match.time}</span>
                                     </div>
-                                    <div class="flex items-center gap-3 flex-1 overflow-hidden">
+                                    <div class="flex items-center gap-2 md:gap-3 flex-1 overflow-hidden">
                                         <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 w-full">
-                                            <span class="font-bold text-slate-800 truncate text-sm sm:text-base">${match.team1}</span>
-                                            <div class="flex items-center justify-center"><span class="text-[10px] font-black bg-slate-900 text-white px-2 py-0.5 rounded italic">VS</span></div>
-                                            <span class="font-bold text-slate-800 truncate text-sm sm:text-base">${match.team2}</span>
+                                            <span class="font-bold text-slate-800 truncate text-xs md:text-base">${match.team1}</span>
+                                            <div class="flex items-center justify-start sm:justify-center">
+                                                <span class="text-[8px] md:text-[10px] font-black bg-slate-900 text-white px-1.5 py-0.5 rounded italic">VS</span>
+                                            </div>
+                                            <span class="font-bold text-slate-800 truncate text-xs md:text-base">${match.team2}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <button onclick="goToPhoto('${match.photoLink}')" class="flex items-center justify-center gap-2 bg-blue-900 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm">
-                                    <i data-lucide="image" class="w-4 h-4"></i>
+                                <button onclick="goToPhoto('${match.photoLink}')" class="flex items-center justify-center gap-2 bg-blue-900 hover:bg-red-600 text-white px-4 md:px-5 py-2 md:py-2.5 rounded-xl font-bold text-xs transition-all shadow-sm w-full sm:w-auto">
+                                    <i data-lucide="camera" class="w-4 h-4"></i>
                                     <span>รูปภาพ</span>
                                 </button>
                             </div>
@@ -270,7 +288,6 @@
 
         window.onload = () => {
             renderMatches();
-            lucide.createIcons();
         };
     </script>
 </body>
