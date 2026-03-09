@@ -24,7 +24,7 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #ef4444;
+            background: #475569;
             color: white;
             padding: 12px 24px;
             border-radius: 12px;
@@ -36,6 +36,14 @@
 
         .tab-active-u15 { background-color: white !important; color: #1e3a8a !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         .tab-active-u18 { background-color: #ef4444 !important; color: white !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        
+        /* สไตล์สำหรับปุ่มที่ยังไม่มีรูป */
+        .btn-no-photo {
+            background-color: #e2e8f0 !important;
+            color: #94a3b8 !important;
+            cursor: not-allowed;
+            box-shadow: none !important;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 pb-20">
@@ -99,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- TAB SWITCHER (Prominent for Mobile) -->
+            <!-- TAB SWITCHER -->
             <div class="bg-blue-950/50 p-1.5 rounded-2xl border border-white/10 max-w-sm mx-auto flex gap-1">
                 <button onclick="switchTab('u15')" id="hero-btn-u15" class="flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u15">
                     <i data-lucide="users-round" class="w-4 h-4"></i>
@@ -144,7 +152,7 @@
             </div>
             <p class="font-black text-slate-800 uppercase tracking-widest text-sm">SPM Prachuap Champions Cup #1</p>
             <p class="text-slate-400 text-[10px] md:text-xs mt-2 font-medium">© 2026 สำนักงานเขตพื้นที่การศึกษามัธยมศึกษาประจวบคีรีขันธ์</p>
-            <p class="text-slate-400 text-[10px] md:text-xs mt-2 font-medium">จัดทำโดย นายสุนทร อุ่นทวี | นายทนงศักดิ์ โอษฐงาม | นายธีรศักดิ์ ชลรัตน์อมฤต | นายปกรณ์ บริบูรณ์ทรัพย์ | นายพริษฐ์ พลชัย | นายธนากร เต็มดวง</p>
+            <p class="text-slate-400 text-[10px] md:text-xs mt-2 font-medium">จัดทำโดย ทีมงานฝ่าย ICT สพม.ประจวบคีรีขันธ์</p>
         </div>
     </footer>
 
@@ -228,7 +236,7 @@
                 toast.style.display = 'block';
                 setTimeout(() => {
                     toast.style.display = 'none';
-                }, 3000);
+                }, 2000);
             }
         }
 
@@ -238,8 +246,15 @@
             list.innerHTML = '';
 
             matches.forEach((match) => {
+                const hasPhoto = match.photoLink && match.photoLink !== '#';
                 let html = '';
+                
                 if (match.type === 'ceremony') {
+                    // ปรับสีปุ่มพิธีการ
+                    const ceremonyBtnClass = hasPhoto 
+                        ? "bg-amber-600 hover:bg-amber-700 text-white shadow-sm" 
+                        : "btn-no-photo";
+
                     html = `
                         <div class="bg-gradient-to-r from-yellow-400 to-amber-500 p-0.5 rounded-2xl shadow-lg my-6">
                             <div class="bg-white/95 backdrop-blur px-4 md:px-6 py-4 rounded-[14px] flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -248,14 +263,19 @@
                                     <div class="h-4 w-[2px] bg-amber-200"></div>
                                     <span class="text-amber-900 font-black text-base md:text-lg uppercase tracking-wide text-center sm:text-left">${match.label}</span>
                                 </div>
-                                <button onclick="goToPhoto('${match.photoLink}')" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-5 py-2 rounded-xl font-bold text-xs transition-all shadow-sm">
+                                <button onclick="goToPhoto('${match.photoLink}')" class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2 rounded-xl font-bold text-xs transition-all ${ceremonyBtnClass}">
                                     <i data-lucide="image" class="w-4 h-4"></i>
-                                    <span>รูปภาพกิจกรรม</span>
+                                    <span>${hasPhoto ? 'รูปภาพกิจกรรม' : 'ยังไม่มีรูปภาพ'}</span>
                                 </button>
                             </div>
                         </div>
                     `;
                 } else {
+                    // ปรับสีปุ่มการแข่งขันปกติ
+                    const matchBtnClass = hasPhoto 
+                        ? "bg-blue-900 hover:bg-red-600 text-white shadow-sm" 
+                        : "btn-no-photo";
+
                     html = `
                         <div class="bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl p-3 md:p-4 shadow-sm transition-all duration-200">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -274,9 +294,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button onclick="goToPhoto('${match.photoLink}')" class="flex items-center justify-center gap-2 bg-blue-900 hover:bg-red-600 text-white px-4 md:px-5 py-2 md:py-2.5 rounded-xl font-bold text-xs transition-all shadow-sm w-full sm:w-auto">
-                                    <i data-lucide="camera" class="w-4 h-4"></i>
-                                    <span>รูปภาพ</span>
+                                <button onclick="goToPhoto('${match.photoLink}')" class="flex items-center justify-center gap-2 px-4 md:px-5 py-2 md:py-2.5 rounded-xl font-bold text-xs transition-all w-full sm:w-auto ${matchBtnClass}">
+                                    <i data-lucide="${hasPhoto ? 'camera' : 'camera-off'}" class="w-4 h-4"></i>
+                                    <span>${hasPhoto ? 'ดูรูปภาพ' : 'รอรูปภาพ'}</span>
                                 </button>
                             </div>
                         </div>
