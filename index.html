@@ -197,26 +197,32 @@
         ];
 
         // --- KNOCKOUT DATA (10 March) ---
-        // ปรับปรุงข้อมูลตามภาพต้นฉบับ
         const u15_Day10 = [
+            { type: 'header', label: 'รอบ 8 ทีมสุดท้าย (สนาม 1)' },
             { group: '8 ทีม (1)', time: '09.00', team1: 'ประจวบวิทยาลัย', team2: 'เตรียมฯ ปราณบุรี', photoLink: '#' },
             { group: '8 ทีม (2)', time: '09.40', team1: 'เมืองปราณบุรี', team2: 'ธงชัยวิทยา', photoLink: '#' },
             { group: '8 ทีม (3)', time: '10.20', team1: 'ทับสะแกวิทยา', team2: 'ยางชุมวิทยา', photoLink: '#' },
             { group: '8 ทีม (4)', time: '11.00', team1: 'หัวหินวิทยาคม', team2: 'บางสะพานน้อยฯ', photoLink: '#' },
+            { type: 'header', label: 'รอบรองชนะเลิศ' },
             { group: 'รองฯ (1)', time: '11.40', team1: 'ชนะคู่ที่ 1', team2: 'ชนะคู่ที่ 3', photoLink: '#' },
             { group: 'รองฯ (2)', time: '12.20', team1: 'ชนะคู่ที่ 2', team2: 'ชนะคู่ที่ 4', photoLink: '#' },
-            { type: 'ceremony', time: '13.00', label: 'คู่พิเศษ : ผู้บริหาร สพม.ปข. 1 VS ผู้บริหาร สพม.ปข. 2', photoLink: '#' },
+            { type: 'header', label: 'คู่พิเศษ' },
+            { type: 'ceremony', time: '13.00', label: 'ผู้บริหาร สพม.ปข. 1 VS ผู้บริหาร สพม.ปข. 2', photoLink: '#' },
+            { type: 'header', label: 'รอบชิงชนะเลิศ' },
             { group: 'ชิงที่ 3', time: '13.40', team1: 'ผู้แพ้คู่ที่ 5', team2: 'ผู้แพ้คู่ที่ 6', photoLink: '#' },
             { group: 'ชิงชนะเลิศ', time: '14.20', team1: 'ผู้ชนะคู่ที่ 5', team2: 'ผู้ชนะคู่ที่ 6', photoLink: '#' },
         ];
 
         const u18_Day10 = [
+            { type: 'header', label: 'รอบ 8 ทีมสุดท้าย (สนาม 2)' },
             { group: '8 ทีม (1)', time: '09.00', team1: 'บางสะพานวิทยา', team2: 'บางสะพานน้อยฯ', photoLink: '#' },
             { group: '8 ทีม (2)', time: '09.40', team1: 'หัวหิน', team2: 'ห้วยยางวิทยา', photoLink: '#' },
             { group: '8 ทีม (3)', time: '10.20', team1: 'ประจวบวิทยาลัย', team2: 'หัวหินวิทยาคม', photoLink: '#' },
             { group: '8 ทีม (4)', time: '11.00', team1: 'กุยบุรีวิทยา', team2: 'เตรียมฯ ปราณบุรี', photoLink: '#' },
+            { type: 'header', label: 'รอบรองชนะเลิศ' },
             { group: 'รองฯ (1)', time: '11.40', team1: 'ชนะคู่ที่ 1', team2: 'ชนะคู่ที่ 3', photoLink: '#' },
             { group: 'รองฯ (2)', time: '12.20', team1: 'ชนะคู่ที่ 2', team2: 'ชนะคู่ที่ 4', photoLink: '#' },
+            { type: 'header', label: 'รอบชิงชนะเลิศ' },
             { group: 'ชิงที่ 3', time: '13.40', team1: 'ผู้แพ้คู่ที่ 5', team2: 'ผู้แพ้คู่ที่ 6', photoLink: '#' },
             { group: 'ชิงชนะเลิศ', time: '14.20', team1: 'ผู้ชนะคู่ที่ 5', team2: 'ผู้ชนะคู่ที่ 6', photoLink: '#' },
         ];
@@ -284,7 +290,7 @@
                 window.open(link, '_blank');
             } else {
                 const toast = document.getElementById('error-toast');
-                toast.innerText = currentDate === '9' ? 'ขออภัย! ยังไม่มีลิงก์รูปภาพในขณะนี้' : 'ยังไม่ถึงเวลาการแข่งขันรอบชิงชนะเลิศ';
+                toast.innerText = currentDate === '9' ? 'ขออภัย! ยังไม่มีลิงก์รูปภาพในขณะนี้' : 'ยังไม่ถึงเวลาการแข่งขัน';
                 toast.style.display = 'block';
                 setTimeout(() => {
                     toast.style.display = 'none';
@@ -305,6 +311,20 @@
             list.innerHTML = '';
 
             matches.forEach((match, index) => {
+                if (match.type === 'header') {
+                    const headerHtml = `
+                        <div class="pt-6 pb-2">
+                            <h3 class="flex items-center gap-2 font-black text-blue-900 text-sm md:text-base uppercase tracking-tight">
+                                <span class="w-8 h-[2px] bg-blue-900/20"></span>
+                                ${match.label}
+                                <span class="flex-1 h-[2px] bg-blue-900/20"></span>
+                            </h3>
+                        </div>
+                    `;
+                    list.innerHTML += headerHtml;
+                    return;
+                }
+
                 const hasPhoto = match.photoLink && match.photoLink !== '#';
                 let html = '';
                 
@@ -314,7 +334,7 @@
                         : "btn-no-photo";
 
                     html = `
-                        <div class="bg-gradient-to-r from-yellow-400 to-amber-500 p-0.5 rounded-2xl shadow-lg my-6">
+                        <div class="bg-gradient-to-r from-yellow-400 to-amber-500 p-0.5 rounded-2xl shadow-lg my-2">
                             <div class="bg-white/95 backdrop-blur px-4 md:px-6 py-4 rounded-[14px] flex flex-col sm:flex-row items-center justify-between gap-4">
                                 <div class="flex items-center gap-3">
                                     <span class="text-amber-700 font-black text-lg">${match.time} น.</span>
