@@ -37,7 +37,9 @@
         .tab-active-u15 { background-color: white !important; color: #1e3a8a !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         .tab-active-u18 { background-color: #ef4444 !important; color: white !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         
-        /* สไตล์สำหรับปุ่มที่ยังไม่มีรูป */
+        .date-active { background-color: #1e3a8a !important; color: white !important; }
+        .date-inactive { background-color: #f1f5f9; color: #64748b; }
+
         .btn-no-photo {
             background-color: #e2e8f0 !important;
             color: #94a3b8 !important;
@@ -64,19 +66,19 @@
                 </div>
                 
                 <div class="flex items-center gap-2">
-                    <a href="#" class="text-slate-400 hover:text-blue-900 transition-colors">
-                        <i data-lucide="info" class="w-5 h-5"></i>
-                    </a>
+                    <button onclick="location.reload()" class="text-slate-400 hover:text-blue-900 transition-colors">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="relative bg-blue-900 text-white py-12 md:py-16 px-4 overflow-hidden">
+    <header class="relative bg-blue-900 text-white py-10 md:py-14 px-4 overflow-hidden">
         <div class="absolute top-0 right-0 w-1/3 h-full bg-red-600/20 skew-x-12 transform translate-x-1/2"></div>
         <div class="max-w-4xl mx-auto text-center relative z-10">
-            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/20 mb-6 animate-pulse">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/20 mb-6">
                 <i data-lucide="award" class="w-4 h-4 text-yellow-400"></i>
                 <span class="text-[10px] md:text-xs font-bold tracking-widest uppercase">สำนักงานเขตพื้นที่การศึกษามัธยมศึกษาประจวบคีรีขันธ์</span>
             </div>
@@ -85,38 +87,29 @@
                 SPM .  PRACHUAP <br><span class="text-red-500">CHAMPIONS CUP</span>
             </h1>
             
-            <p class="text-blue-100 text-sm md:text-lg font-medium max-w-2xl mx-auto leading-relaxed italic mb-8">
-                การแข่งขันฟุตบอลนักเรียน 7 คน ชิงชนะเลิศ สพม.ประจวบคีรีขันธ์ ครั้งที่ 1 ประจำปี 2569
-            </p>
-            
-            <!-- Date & Location -->
-            <div class="grid grid-cols-2 gap-3 md:gap-4 max-w-lg mx-auto mb-10">
-                <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
-                    <i data-lucide="calendar" class="w-5 h-5 text-red-400 flex-shrink-0"></i>
-                    <div class="text-left">
-                        <p class="text-[9px] uppercase text-blue-300 font-bold">วันที่แข่งขัน</p>
-                        <p class="text-xs md:text-sm font-bold">9 มี.ค. 69</p>
-                    </div>
+            <!-- Date & Category Selection Group -->
+            <div class="flex flex-col gap-4 mt-8 items-center">
+                <!-- Select Date (Day 1 / Day 2) -->
+                <div class="flex bg-blue-950/40 p-1 rounded-2xl border border-white/10 w-full max-w-xs">
+                    <button onclick="switchDate('9')" id="date-btn-9" class="flex-1 py-2 px-4 rounded-xl font-bold text-xs transition-all date-active">
+                        9 มี.ค. 69 (รอบแรก)
+                    </button>
+                    <button onclick="switchDate('10')" id="date-btn-10" class="flex-1 py-2 px-4 rounded-xl font-bold text-xs transition-all text-blue-200">
+                        10 มี.ค. 69 (รอบชิง)
+                    </button>
                 </div>
-                <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-yellow-400 flex-shrink-0"></i>
-                    <div class="text-left">
-                        <p class="text-[9px] uppercase text-blue-300 font-bold">สถานที่</p>
-                        <p class="text-xs md:text-sm font-bold truncate">สามอ่าว สเตเดียม</p>
-                    </div>
-                </div>
-            </div>
 
-            <!-- TAB SWITCHER -->
-            <div class="bg-blue-950/50 p-1.5 rounded-2xl border border-white/10 max-w-sm mx-auto flex gap-1">
-                <button onclick="switchTab('u15')" id="hero-btn-u15" class="flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u15">
-                    <i data-lucide="users-round" class="w-4 h-4"></i>
-                    รุ่นอายุไม่เกิน 15
-                </button>
-                <button onclick="switchTab('u18')" id="hero-btn-u18" class="flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200">
-                    <i data-lucide="users-round" class="w-4 h-4"></i>
-                    รุ่นอายุไม่เกิน 18
-                </button>
+                <!-- Select Category (U15 / U18) -->
+                <div class="bg-blue-950/50 p-1.5 rounded-2xl border border-white/10 w-full max-w-sm flex gap-1">
+                    <button onclick="switchTab('u15')" id="hero-btn-u15" class="flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u15">
+                        <i data-lucide="users-round" class="w-4 h-4"></i>
+                        รุ่น 15 ปี
+                    </button>
+                    <button onclick="switchTab('u18')" id="hero-btn-u18" class="flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200">
+                        <i data-lucide="users-round" class="w-4 h-4"></i>
+                        รุ่น 18 ปี
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -130,7 +123,7 @@
                 </div>
                 <div>
                     <h2 id="tab-title" class="font-black text-lg md:text-xl leading-none">ตารางแข่งขันรุ่น 15 ปี</h2>
-                    <p class="text-slate-500 text-[10px] md:text-xs mt-1 font-medium italic">รอบแรก (Group Stage)</p>
+                    <p id="sub-title" class="text-slate-500 text-[10px] md:text-xs mt-1 font-medium italic">รอบแรก (Group Stage) | 9 มี.ค. 69</p>
                 </div>
             </div>
             <div>
@@ -152,14 +145,17 @@
             </div>
             <p class="font-black text-slate-800 uppercase tracking-widest text-sm">SPM Prachuap Champions Cup #1</p>
             <p class="text-slate-400 text-[10px] md:text-xs mt-2 font-medium">© 2026 สำนักงานเขตพื้นที่การศึกษามัธยมศึกษาประจวบคีรีขันธ์</p>
-            <p class="text-slate-400 text-[10px] md:text-xs mt-2 font-medium">จัดทำโดย นายสุนทร อุ่นทวี | นายทนงศักดิ์ โอษฐงาม | นายธีรศักดิ์ ชลรัตน์อมฤต | นายปกรณ์ บริบูรณ์ทรัพย์ | นายพริษฐ์ พลชัย | นายธนากร เต็มดวง</p>
+            <p class="text-slate-400 text-[10px] md:text-xs mt-2 font-medium">จัดทำโดย คณะกรรมการฝ่ายสื่อและเทคโนโลยี สพม.ประจวบคีรีขันธ์</p>
         </div>
     </footer>
 
     <script>
         let currentTab = 'u15';
+        let currentDate = '9';
 
-        const u15Matches = [
+        // --- DATA STRUCTURES ---
+
+        const u15_Day9 = [
             { group: 'สาย A', time: '08.00', team1: 'ธงชัยวิทยา', team2: 'หัวหิน', photoLink: 'https://photos.app.goo.gl/cFZ8cB1qffAHsBEr9' },
             { group: 'สาย B', time: '08.30', team1: 'บางสะพานวิทยา', team2: 'เตรียมฯ ปราณบุรี', photoLink: 'https://photos.app.goo.gl/Gf2pMtg5DqCC1tGr7' },
             { type: 'ceremony', time: '09.00', label: 'พิธีเปิดการแข่งขันและภาพกิจกรรม', photoLink: 'https://photos.app.goo.gl/Wt1w3oNipiwh2n2DA' },
@@ -181,7 +177,7 @@
             { group: 'สาย D', time: '16.30', team1: 'ยางชุมวิทยา', team2: 'ชัยเกษมวิทยา', photoLink: 'https://photos.app.goo.gl/Evx4EK3wLkr8mTwx8' },
         ];
 
-        const u18Matches = [
+        const u18_Day9 = [
             { group: 'สาย A', time: '08.00', team1: 'ห้วยยางวิทยา', team2: 'ทับสะแกวิทยา', photoLink: 'https://photos.app.goo.gl/ZWnpYNt92RGdcCps9' },
             { group: 'สาย B', time: '08.30', team1: 'หัวหิน', team2: 'บางสะพานน้อยฯ', photoLink: 'https://photos.app.goo.gl/j4W2zpcxo6jUBQyZ8' },
             { type: 'ceremony', time: '09.00', label: 'พิธีเปิดการแข่งขันและภาพกิจกรรม', photoLink: 'https://photos.app.goo.gl/Wt1w3oNipiwh2n2DA' },
@@ -200,32 +196,87 @@
             { group: 'สาย D', time: '15.30', team1: 'หัวหินวิทยาคม', team2: 'หว้ากอวิทยาลัย', photoLink: 'https://photos.app.goo.gl/oQ9J3Drr1ZUepbX19' },
         ];
 
+        // --- KNOCKOUT DATA (10 March) ---
+        // ปรับปรุงข้อมูลตามภาพต้นฉบับ
+        const u15_Day10 = [
+            { group: '8 ทีม (1)', time: '09.00', team1: 'ประจวบวิทยาลัย', team2: 'เตรียมฯ ปราณบุรี', photoLink: '#' },
+            { group: '8 ทีม (2)', time: '09.40', team1: 'เมืองปราณบุรี', team2: 'ธงชัยวิทยา', photoLink: '#' },
+            { group: '8 ทีม (3)', time: '10.20', team1: 'ทับสะแกวิทยา', team2: 'ยางชุมวิทยา', photoLink: '#' },
+            { group: '8 ทีม (4)', time: '11.00', team1: 'หัวหินวิทยาคม', team2: 'บางสะพานน้อยฯ', photoLink: '#' },
+            { group: 'รองฯ (1)', time: '11.40', team1: 'ชนะคู่ที่ 1', team2: 'ชนะคู่ที่ 3', photoLink: '#' },
+            { group: 'รองฯ (2)', time: '12.20', team1: 'ชนะคู่ที่ 2', team2: 'ชนะคู่ที่ 4', photoLink: '#' },
+            { type: 'ceremony', time: '13.00', label: 'คู่พิเศษ : ผู้บริหาร สพม.ปข. 1 VS ผู้บริหาร สพม.ปข. 2', photoLink: '#' },
+            { group: 'ชิงที่ 3', time: '13.40', team1: 'ผู้แพ้คู่ที่ 5', team2: 'ผู้แพ้คู่ที่ 6', photoLink: '#' },
+            { group: 'ชิงชนะเลิศ', time: '14.20', team1: 'ผู้ชนะคู่ที่ 5', team2: 'ผู้ชนะคู่ที่ 6', photoLink: '#' },
+        ];
+
+        const u18_Day10 = [
+            { group: '8 ทีม (1)', time: '09.00', team1: 'บางสะพานวิทยา', team2: 'บางสะพานน้อยฯ', photoLink: '#' },
+            { group: '8 ทีม (2)', time: '09.40', team1: 'หัวหิน', team2: 'ห้วยยางวิทยา', photoLink: '#' },
+            { group: '8 ทีม (3)', time: '10.20', team1: 'ประจวบวิทยาลัย', team2: 'หัวหินวิทยาคม', photoLink: '#' },
+            { group: '8 ทีม (4)', time: '11.00', team1: 'กุยบุรีวิทยา', team2: 'เตรียมฯ ปราณบุรี', photoLink: '#' },
+            { group: 'รองฯ (1)', time: '11.40', team1: 'ชนะคู่ที่ 1', team2: 'ชนะคู่ที่ 3', photoLink: '#' },
+            { group: 'รองฯ (2)', time: '12.20', team1: 'ชนะคู่ที่ 2', team2: 'ชนะคู่ที่ 4', photoLink: '#' },
+            { group: 'ชิงที่ 3', time: '13.40', team1: 'ผู้แพ้คู่ที่ 5', team2: 'ผู้แพ้คู่ที่ 6', photoLink: '#' },
+            { group: 'ชิงชนะเลิศ', time: '14.20', team1: 'ผู้ชนะคู่ที่ 5', team2: 'ผู้ชนะคู่ที่ 6', photoLink: '#' },
+        ];
+
+        // --- LOGIC FUNCTIONS ---
+
+        function switchDate(date) {
+            currentDate = date;
+            const btn9 = document.getElementById('date-btn-9');
+            const btn10 = document.getElementById('date-btn-10');
+
+            if (date === '9') {
+                btn9.className = 'flex-1 py-2 px-4 rounded-xl font-bold text-xs transition-all date-active';
+                btn10.className = 'flex-1 py-2 px-4 rounded-xl font-bold text-xs transition-all text-blue-200';
+            } else {
+                btn10.className = 'flex-1 py-2 px-4 rounded-xl font-bold text-xs transition-all date-active';
+                btn9.className = 'flex-1 py-2 px-4 rounded-xl font-bold text-xs transition-all text-blue-200';
+            }
+            updateLabels();
+            renderMatches();
+        }
+
         function switchTab(tab) {
             currentTab = tab;
             const heroBtnU15 = document.getElementById('hero-btn-u15');
             const heroBtnU18 = document.getElementById('hero-btn-u18');
-            const tabTitle = document.getElementById('tab-title');
-            const tabIconBox = document.getElementById('tab-icon-box');
-            const fieldLabel = document.getElementById('field-label');
 
             if (tab === 'u15') {
                 heroBtnU15.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u15';
                 heroBtnU18.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200';
-                
-                tabTitle.innerText = 'ตารางแข่งขันรุ่น 15 ปี';
+            } else {
+                heroBtnU18.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u18';
+                heroBtnU15.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200';
+            }
+            updateLabels();
+            renderMatches();
+        }
+
+        function updateLabels() {
+            const tabTitle = document.getElementById('tab-title');
+            const subTitle = document.getElementById('sub-title');
+            const tabIconBox = document.getElementById('tab-icon-box');
+            const fieldLabel = document.getElementById('field-label');
+
+            const modelName = currentTab === 'u15' ? '15 ปี' : '18 ปี';
+            const phaseName = currentDate === '9' ? 'รอบแรก (Group Stage)' : 'รอบชิงชนะเลิศ (Knockout Stage)';
+            const dateStr = currentDate === '9' ? '9 มี.ค. 69' : '10 มี.ค. 69';
+
+            tabTitle.innerText = `ตารางแข่งขันรุ่น ${modelName}`;
+            subTitle.innerText = `${phaseName} | ${dateStr}`;
+
+            if (currentTab === 'u15') {
                 tabIconBox.className = 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-900';
                 fieldLabel.innerText = 'สนามที่ 1';
                 fieldLabel.className = 'bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border border-slate-200';
             } else {
-                heroBtnU18.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u18';
-                heroBtnU15.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200';
-                
-                tabTitle.innerText = 'ตารางแข่งขันรุ่น 18 ปี';
                 tabIconBox.className = 'w-12 h-12 rounded-xl flex items-center justify-center bg-red-100 text-red-600';
                 fieldLabel.innerText = 'สนามที่ 2';
                 fieldLabel.className = 'bg-red-50 text-red-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border border-red-100';
             }
-            renderMatches();
         }
 
         function goToPhoto(link) {
@@ -233,6 +284,7 @@
                 window.open(link, '_blank');
             } else {
                 const toast = document.getElementById('error-toast');
+                toast.innerText = currentDate === '9' ? 'ขออภัย! ยังไม่มีลิงก์รูปภาพในขณะนี้' : 'ยังไม่ถึงเวลาการแข่งขันรอบชิงชนะเลิศ';
                 toast.style.display = 'block';
                 setTimeout(() => {
                     toast.style.display = 'none';
@@ -242,15 +294,21 @@
 
         function renderMatches() {
             const list = document.getElementById('match-list');
-            const matches = currentTab === 'u15' ? u15Matches : u18Matches;
+            let matches = [];
+
+            if (currentDate === '9') {
+                matches = currentTab === 'u15' ? u15_Day9 : u18_Day9;
+            } else {
+                matches = currentTab === 'u15' ? u15_Day10 : u18_Day10;
+            }
+
             list.innerHTML = '';
 
-            matches.forEach((match) => {
+            matches.forEach((match, index) => {
                 const hasPhoto = match.photoLink && match.photoLink !== '#';
                 let html = '';
                 
                 if (match.type === 'ceremony') {
-                    // ปรับสีปุ่มพิธีการ
                     const ceremonyBtnClass = hasPhoto 
                         ? "bg-amber-600 hover:bg-amber-700 text-white shadow-sm" 
                         : "btn-no-photo";
@@ -271,26 +329,34 @@
                         </div>
                     `;
                 } else {
-                    // ปรับสีปุ่มการแข่งขันปกติ
+                    const isFinal = match.group === 'ชิงชนะเลิศ';
                     const matchBtnClass = hasPhoto 
-                        ? "bg-blue-900 hover:bg-red-600 text-white shadow-sm" 
+                        ? (isFinal ? "bg-red-600 hover:bg-red-700 text-white shadow-md" : "bg-blue-900 hover:bg-red-600 text-white shadow-sm")
                         : "btn-no-photo";
 
+                    const cardBorderClass = isFinal ? "border-red-500 border-2" : "border-slate-200";
+                    const groupBgClass = isFinal ? "bg-red-600 text-white" : "bg-slate-100 text-slate-400";
+
                     html = `
-                        <div class="bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl p-3 md:p-4 shadow-sm transition-all duration-200">
+                        <div class="bg-white hover:bg-slate-50 border ${cardBorderClass} rounded-2xl p-3 md:p-4 shadow-sm transition-all duration-200 relative overflow-hidden">
+                            ${isFinal ? '<div class="absolute top-0 right-0 bg-red-600 text-white text-[8px] px-3 py-1 font-bold uppercase tracking-tighter rounded-bl-xl">Grand Final</div>' : ''}
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div class="flex items-center gap-3 md:gap-4 flex-1">
-                                    <div class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-slate-100 rounded-xl border border-slate-200 flex-shrink-0">
-                                        <span class="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase">${match.group}</span>
-                                        <span class="text-sm md:text-base font-black text-blue-900 leading-none mt-1">${match.time}</span>
+                                    <div class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 ${groupBgClass} rounded-xl border border-slate-200 flex-shrink-0">
+                                        <span class="text-[8px] md:text-[9px] font-bold uppercase text-center leading-none px-1">${match.group}</span>
+                                        <span class="text-sm md:text-base font-black leading-none mt-1">${match.time}</span>
                                     </div>
                                     <div class="flex items-center gap-2 md:gap-3 flex-1 overflow-hidden">
                                         <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 w-full">
-                                            <span class="font-bold text-slate-800 truncate text-xs md:text-base">${match.team1}</span>
-                                            <div class="flex items-center justify-start sm:justify-center">
+                                            <div class="flex flex-col items-center sm:items-end flex-1 min-w-0">
+                                                <span class="font-bold text-slate-800 truncate text-xs md:text-base w-full text-center sm:text-right">${match.team1}</span>
+                                            </div>
+                                            <div class="flex items-center justify-center">
                                                 <span class="text-[8px] md:text-[10px] font-black bg-slate-900 text-white px-1.5 py-0.5 rounded italic">VS</span>
                                             </div>
-                                            <span class="font-bold text-slate-800 truncate text-xs md:text-base">${match.team2}</span>
+                                            <div class="flex flex-col items-center sm:items-start flex-1 min-w-0">
+                                                <span class="font-bold text-slate-800 truncate text-xs md:text-base w-full text-center sm:text-left">${match.team2}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
