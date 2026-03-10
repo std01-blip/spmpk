@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPM. Prachuap Champions Cup #1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&family=Kanit:wght@100;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-thai-header: 'Kanit', sans-serif;
+            --font-thai-body: 'Anuphan', sans-serif;
+        }
+        body { font-family: var(--font-thai-body); }
+        h1, h2, h3, nav, button, .font-header { font-family: var(--font-thai-header); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ef4444; }
+        
+        #error-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #475569;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: bold;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-active-u15 { background-color: white !important; color: #1e3a8a !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .tab-active-u18 { background-color: #ef4444 !important; color: white !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        
+        /* สไตล์สำหรับปุ่มที่ยังไม่มีรูป */
+        .btn-no-photo {
+            background-color: #e2e8f0 !important;
+            color: #94a3b8 !important;
+            cursor: not-allowed;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 pb-20">
+
+    <div id="error-toast">ขออภัย! ยังไม่มีลิงก์รูปภาพในขณะนี้</div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2">
+                    <div class="bg-blue-900 p-1.5 rounded-lg">
+                        <i data-lucide="trophy" class="w-5 h-5 text-yellow-400"></i>
+                    </div>
+                    <span class="font-black text-blue-900 tracking-tight text-lg">
+                        SPM . <span class="text-red-600">  PRACHUAP</span>
+                    </span>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <a href="#" class="text-slate-400 hover:text-blue-900 transition-colors">
+                        <i data-lucide="info" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative bg-blue-900 text-white py-12 md:py-16 px-4 overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-red-600/20 skew-x-12 transform translate-x-1/2"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/20 mb-6 animate-pulse">
+                <i data-lucide="award" class="w-4 h-4 text-yellow-400"></i>
+                <span class="text-[10px] md:text-xs font-bold tracking-widest uppercase">สำนักงานเขตพื้นที่การศึกษามัธยมศึกษาประจวบคีรีขันธ์</span>
+            </div>
+            
+            <h1 class="text-3xl md:text-6xl font-black mb-4 tracking-tighter uppercase leading-tight">
+                SPM .  PRACHUAP <br><span class="text-red-500">CHAMPIONS CUP</span>
+            </h1>
+            
+            <p class="text-blue-100 text-sm md:text-lg font-medium max-w-2xl mx-auto leading-relaxed italic mb-8">
+                การแข่งขันฟุตบอลนักเรียน 7 คน ชิงชนะเลิศ สพม.ประจวบคีรีขันธ์ ครั้งที่ 1 ประจำปี 2569
+            </p>
+            
+            <!-- Date & Location -->
+            <div class="grid grid-cols-2 gap-3 md:gap-4 max-w-lg mx-auto mb-10">
+                <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
+                    <i data-lucide="calendar" class="w-5 h-5 text-red-400 flex-shrink-0"></i>
+                    <div class="text-left">
+                        <p class="text-[9px] uppercase text-blue-300 font-bold">วันที่แข่งขัน</p>
+                        <p class="text-xs md:text-sm font-bold">9 มี.ค. 69</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-yellow-400 flex-shrink-0"></i>
+                    <div class="text-left">
+                        <p class="text-[9px] uppercase text-blue-300 font-bold">สถานที่</p>
+                        <p class="text-xs md:text-sm font-bold truncate">สามอ่าว สเตเดียม</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB SWITCHER -->
+            <div class="bg-blue-950/50 p-1.5 rounded-2xl border border-white/10 max-w-sm mx-auto flex gap-1">
+                <button onclick="switchTab('u15')" id="hero-btn-u15" class="flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u15">
+                    <i data-lucide="users-round" class="w-4 h-4"></i>
+                    รุ่นอายุไม่เกิน 15
+                </button>
+                <button onclick="switchTab('u18')" id="hero-btn-u18" class="flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200">
+                    <i data-lucide="users-round" class="w-4 h-4"></i>
+                    รุ่นอายุไม่เกิน 18
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-4xl mx-auto -mt-6 px-4 relative z-20">
+        <div class="bg-white rounded-2xl p-4 shadow-xl border border-slate-200 mb-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div id="tab-icon-box" class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-900 transition-colors">
+                    <i data-lucide="calendar-range" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 id="tab-title" class="font-black text-lg md:text-xl leading-none">ตารางแข่งขันรุ่น 15 ปี</h2>
+                    <p class="text-slate-500 text-[10px] md:text-xs mt-1 font-medium italic">รอบแรก (Group Stage)</p>
+                </div>
+            </div>
+            <div>
+                <span id="field-label" class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border border-slate-200 transition-all">สนามที่ 1</span>
+            </div>
+        </div>
+
+        <div id="match-list" class="space-y-3">
+            <!-- Matches Injected Here -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 py-10 border-t border-slate-200 bg-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <div class="flex justify-center gap-4 mb-6">
+                <div class="w-10 h-10 rounded-full bg-blue-900 flex items-center justify-center text-white"><i data-lucide="trophy" class="w-5 h-5"></i></div>
+                <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-white font-black text-xs italic">SPM</div>
+            </div>
+            <p class="font-black text-slate-800 uppercase tracking-widest text-sm">SPM Prachuap Champions Cup #1</p>
+            <p class="text-slate-400 text-[10px] md:text-xs mt-2 font-medium">© 2026 สำนักงานเขตพื้นที่การศึกษามัธยมศึกษาประจวบคีรีขันธ์</p>
+            <p class="text-slate-400 text-[10px] md:text-xs mt-2 font-medium">จัดทำโดย นายสุนทร อุ่นทวี | นายทนงศักดิ์ โอษฐงาม | นายธีรศักดิ์ ชลรัตน์อมฤต | นายปกรณ์ บริบูรณ์ทรัพย์ | นายพริษฐ์ พลชัย | นายธนากร เต็มดวง</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentTab = 'u15';
+
+        const u15Matches = [
+            { group: 'สาย A', time: '08.00', team1: 'ธงชัยวิทยา', team2: 'หัวหิน', photoLink: 'https://photos.app.goo.gl/cFZ8cB1qffAHsBEr9' },
+            { group: 'สาย B', time: '08.30', team1: 'บางสะพานวิทยา', team2: 'เตรียมฯ ปราณบุรี', photoLink: 'https://photos.app.goo.gl/Gf2pMtg5DqCC1tGr7' },
+            { type: 'ceremony', time: '09.00', label: 'พิธีเปิดการแข่งขันและภาพกิจกรรม', photoLink: 'https://photos.app.goo.gl/Wt1w3oNipiwh2n2DA' },
+            { group: 'สาย C', time: '09.30', team1: 'ห้วยยางวิทยา', team2: 'บางสะพานน้อยฯ', photoLink: 'https://photos.app.goo.gl/pa48MqVyY7dv5uVr5' },
+            { group: 'สาย C', time: '10.00', team1: 'ทับสะแกวิทยา', team2: 'ปากน้ำปราณวิทยา', photoLink: 'https://photos.app.goo.gl/KVRUkjfpuSMWr23m7' },
+            { group: 'สาย D', time: '10.30', team1: 'หัวหินวิทยาคม', team2: 'ยางชุมวิทยา', photoLink: 'https://photos.app.goo.gl/MfxaGcWhBhEEe6Yn7' },
+            { group: 'สาย D', time: '11.00', team1: 'ชัยเกษมวิทยา', team2: 'อ่าวน้อยวิทยานิคม', photoLink: 'https://photos.app.goo.gl/yDXwTSPokAKLRgh57' },
+            { group: 'สาย A', time: '11.30', team1: 'ธงชัยวิทยา', team2: 'ประจวบวิทยาลัย', photoLink: 'https://photos.app.goo.gl/fL9ZwFuz7tvHekRe6' },
+            { group: 'สาย B', time: '12.00', team1: 'บางสะพานวิทยา', team2: 'เมืองปราณบุรี', photoLink: 'https://photos.app.goo.gl/HM6EzCYemfKqUFkB6' },
+            { group: 'สาย C', time: '12.30', team1: 'ห้วยยางวิทยา', team2: 'ทับสะแกวิทยา', photoLink: 'https://photos.app.goo.gl/G6ULmjDGSepupqYz8' },
+            { group: 'สาย C', time: '13.00', team1: 'บางสะพานน้อยฯ', team2: 'ปากน้ำปราณวิทยา', photoLink: 'https://photos.app.goo.gl/cTTT7GCgNV2iYxMJ7' },
+            { group: 'สาย D', time: '13.30', team1: 'หัวหินวิทยาคม', team2: 'ชัยเกษมวิทยา', photoLink: 'https://photos.app.goo.gl/DRJBth4dxe5rbAtj8' },
+            { group: 'สาย D', time: '14.00', team1: 'ยางชุมวิทยา', team2: 'อ่าวน้อยวิทยานิคม', photoLink: 'https://photos.app.goo.gl/eRcUzsnHkQqNorPD9' },
+            { group: 'สาย A', time: '14.30', team1: 'หัวหิน', team2: 'ประจวบวิทยาลัย', photoLink: 'https://photos.app.goo.gl/jFj9oEFbkbzTiue78' },
+            { group: 'สาย B', time: '15.00', team1: 'เตรียมฯ ปราณบุรี', team2: 'เมืองปราณบุรี', photoLink: 'https://photos.app.goo.gl/gi54MEmsiy9N1QsK7' },
+            { group: 'สาย C', time: '15.30', team1: 'ห้วยยางวิทยา', team2: 'ปากน้ำปราณวิทยา', photoLink: 'https://photos.app.goo.gl/zCpBDbWsxpy1rWcV6' },
+            { group: 'สาย C', time: '16.00', team1: 'บางสะพานน้อยฯ', team2: 'ทับสะแกวิทยา', photoLink: 'https://photos.app.goo.gl/YWuuTBdeSJYsnFxbA' },
+            { group: 'สาย D', time: '16.00', team1: 'หัวหินวิทยาคม', team2: 'อ่าวน้อยวิทยานิคม', photoLink: 'https://photos.app.goo.gl/GE2mi877mQrHzxuU7' },
+            { group: 'สาย D', time: '16.30', team1: 'ยางชุมวิทยา', team2: 'ชัยเกษมวิทยา', photoLink: 'https://photos.app.goo.gl/Evx4EK3wLkr8mTwx8' },
+        ];
+
+        const u18Matches = [
+            { group: 'สาย A', time: '08.00', team1: 'ห้วยยางวิทยา', team2: 'ทับสะแกวิทยา', photoLink: 'https://photos.app.goo.gl/ZWnpYNt92RGdcCps9' },
+            { group: 'สาย B', time: '08.30', team1: 'หัวหิน', team2: 'บางสะพานน้อยฯ', photoLink: 'https://photos.app.goo.gl/j4W2zpcxo6jUBQyZ8' },
+            { type: 'ceremony', time: '09.00', label: 'พิธีเปิดการแข่งขันและภาพกิจกรรม', photoLink: 'https://photos.app.goo.gl/Wt1w3oNipiwh2n2DA' },
+            { group: 'สาย C', time: '09.30', team1: 'ประจวบวิทยาลัย', team2: 'สามร้อยยอดวิทยาคม', photoLink: 'https://photos.app.goo.gl/Q3zn5cizGMfuNns59' },
+            { group: 'สาย D', time: '10.00', team1: 'ปากน้ำปราณวิทยา', team2: 'หัวหินวิทยาคม', photoLink: 'https://photos.app.goo.gl/jW8M4jievDXp5rXw8' },
+            { group: 'สาย D', time: '10.30', team1: 'หว้ากอวิทยาลัย', team2: 'กุยบุรีวิทยา', photoLink: 'https://photos.app.goo.gl/D8m4BKNyUd9njGUn6' },
+            { group: 'สาย A', time: '11.00', team1: 'ห้วยยางวิทยา', team2: 'บางสะพานวิทยา', photoLink: 'https://photos.app.goo.gl/H5NiiXrBCKkNbHaL7' },
+            { group: 'สาย B', time: '11.30', team1: 'หัวหิน', team2: 'หนองพลับวิทยา', photoLink: 'https://photos.app.goo.gl/VzBwhEFc8YQVw6m29' },
+            { group: 'สาย C', time: '12.00', team1: 'ประจวบวิทยาลัย', team2: 'เตรียมฯ ปราณบุรี', photoLink: 'https://photos.app.goo.gl/ZQarZB9GH1kuUKEF7' },
+            { group: 'สาย D', time: '12.30', team1: 'ปากน้ำปราณวิทยา', team2: 'หว้ากอวิทยาลัย', photoLink: 'https://photos.app.goo.gl/asR2kUCAF9oGFPd46' },
+            { group: 'สาย D', time: '13.00', team1: 'หัวหินวิทยาคม', team2: 'กุยบุรีวิทยา', photoLink: 'https://photos.app.goo.gl/5kArrqULLUe727Zd9' },
+            { group: 'สาย A', time: '13.30', team1: 'ทับสะแกวิทยา', team2: 'บางสะพานวิทยา', photoLink: 'https://photos.app.goo.gl/SSZkg5eVayDM2VmQ8' },
+            { group: 'สาย B', time: '14.00', team1: 'บางสะพานน้อยฯ', team2: 'หนองพลับวิทยา', photoLink: 'https://photos.app.goo.gl/7qiGKjCQZ9ZqYeoL9' },
+            { group: 'สาย C', time: '14.30', team1: 'สามร้อยยอดวิทยาคม', team2: 'เตรียมฯ ปราณบุรี', photoLink: 'https://photos.app.goo.gl/pdzndkRBCV8JHoi26' },
+            { group: 'สาย D', time: '15.00', team1: 'ปากน้ำปราณวิทยา', team2: 'กุยบุรีวิทยา', photoLink: 'https://photos.app.goo.gl/bLw4WmxJ8V2E1nNY9' },
+            { group: 'สาย D', time: '15.30', team1: 'หัวหินวิทยาคม', team2: 'หว้ากอวิทยาลัย', photoLink: 'https://photos.app.goo.gl/oQ9J3Drr1ZUepbX19' },
+        ];
+
+        function switchTab(tab) {
+            currentTab = tab;
+            const heroBtnU15 = document.getElementById('hero-btn-u15');
+            const heroBtnU18 = document.getElementById('hero-btn-u18');
+            const tabTitle = document.getElementById('tab-title');
+            const tabIconBox = document.getElementById('tab-icon-box');
+            const fieldLabel = document.getElementById('field-label');
+
+            if (tab === 'u15') {
+                heroBtnU15.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u15';
+                heroBtnU18.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200';
+                
+                tabTitle.innerText = 'ตารางแข่งขันรุ่น 15 ปี';
+                tabIconBox.className = 'w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100 text-blue-900';
+                fieldLabel.innerText = 'สนามที่ 1';
+                fieldLabel.className = 'bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border border-slate-200';
+            } else {
+                heroBtnU18.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 tab-active-u18';
+                heroBtnU15.className = 'flex-1 py-3 px-4 rounded-xl font-black text-sm transition-all duration-300 flex items-center justify-center gap-2 text-blue-200';
+                
+                tabTitle.innerText = 'ตารางแข่งขันรุ่น 18 ปี';
+                tabIconBox.className = 'w-12 h-12 rounded-xl flex items-center justify-center bg-red-100 text-red-600';
+                fieldLabel.innerText = 'สนามที่ 2';
+                fieldLabel.className = 'bg-red-50 text-red-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border border-red-100';
+            }
+            renderMatches();
+        }
+
+        function goToPhoto(link) {
+            if (link && link !== '#') {
+                window.open(link, '_blank');
+            } else {
+                const toast = document.getElementById('error-toast');
+                toast.style.display = 'block';
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 2000);
+            }
+        }
+
+        function renderMatches() {
+            const list = document.getElementById('match-list');
+            const matches = currentTab === 'u15' ? u15Matches : u18Matches;
+            list.innerHTML = '';
+
+            matches.forEach((match) => {
+                const hasPhoto = match.photoLink && match.photoLink !== '#';
+                let html = '';
+                
+                if (match.type === 'ceremony') {
+                    // ปรับสีปุ่มพิธีการ
+                    const ceremonyBtnClass = hasPhoto 
+                        ? "bg-amber-600 hover:bg-amber-700 text-white shadow-sm" 
+                        : "btn-no-photo";
+
+                    html = `
+                        <div class="bg-gradient-to-r from-yellow-400 to-amber-500 p-0.5 rounded-2xl shadow-lg my-6">
+                            <div class="bg-white/95 backdrop-blur px-4 md:px-6 py-4 rounded-[14px] flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-amber-700 font-black text-lg">${match.time} น.</span>
+                                    <div class="h-4 w-[2px] bg-amber-200"></div>
+                                    <span class="text-amber-900 font-black text-base md:text-lg uppercase tracking-wide text-center sm:text-left">${match.label}</span>
+                                </div>
+                                <button onclick="goToPhoto('${match.photoLink}')" class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2 rounded-xl font-bold text-xs transition-all ${ceremonyBtnClass}">
+                                    <i data-lucide="image" class="w-4 h-4"></i>
+                                    <span>${hasPhoto ? 'รูปภาพกิจกรรม' : 'ยังไม่มีรูปภาพ'}</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // ปรับสีปุ่มการแข่งขันปกติ
+                    const matchBtnClass = hasPhoto 
+                        ? "bg-blue-900 hover:bg-red-600 text-white shadow-sm" 
+                        : "btn-no-photo";
+
+                    html = `
+                        <div class="bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl p-3 md:p-4 shadow-sm transition-all duration-200">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div class="flex items-center gap-3 md:gap-4 flex-1">
+                                    <div class="flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-slate-100 rounded-xl border border-slate-200 flex-shrink-0">
+                                        <span class="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase">${match.group}</span>
+                                        <span class="text-sm md:text-base font-black text-blue-900 leading-none mt-1">${match.time}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 md:gap-3 flex-1 overflow-hidden">
+                                        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 w-full">
+                                            <span class="font-bold text-slate-800 truncate text-xs md:text-base">${match.team1}</span>
+                                            <div class="flex items-center justify-start sm:justify-center">
+                                                <span class="text-[8px] md:text-[10px] font-black bg-slate-900 text-white px-1.5 py-0.5 rounded italic">VS</span>
+                                            </div>
+                                            <span class="font-bold text-slate-800 truncate text-xs md:text-base">${match.team2}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="goToPhoto('${match.photoLink}')" class="flex items-center justify-center gap-2 px-4 md:px-5 py-2 md:py-2.5 rounded-xl font-bold text-xs transition-all w-full sm:w-auto ${matchBtnClass}">
+                                    <i data-lucide="${hasPhoto ? 'camera' : 'camera-off'}" class="w-4 h-4"></i>
+                                    <span>${hasPhoto ? 'ดูรูปภาพ' : 'รอรูปภาพ'}</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+                list.innerHTML += html;
+            });
+            lucide.createIcons();
+        }
+
+        window.onload = () => {
+            renderMatches();
+        };
+    </script>
+</body>
+</html>
